@@ -1,3 +1,6 @@
+#ifndef TEMPERATURESENSOR_H
+#define TEMPERATURESENSOR_H
+
 #include "Sensor.h"
 
 class TemperatureSensor : public Sensor {
@@ -5,3 +8,5 @@ class TemperatureSensor : public Sensor {
     TemperatureSensor();
     void loop() override;
 };
+
+#endif

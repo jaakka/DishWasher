@@ -1,3 +1,6 @@
+#ifndef QUICKWASHPROGRAM_H
+#define QUICKWASHPROGRAM_H
+
 #include "Program.h"
 #include "Action.h"
 
@@ -10,3 +13,5 @@ class QuickWashProgram : public Program {
     void loop() override;
     int getDurationMs() override;
 };
+
+#endif

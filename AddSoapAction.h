@@ -1,3 +1,6 @@
+#ifndef ADDSOAPACTION_H
+#define ADDSOAPACTION_H
+
 #include "Action.h"
 
 class AddSoapAction : public Action {
@@ -5,3 +8,5 @@ class AddSoapAction : public Action {
       void execute() override;
       bool isReady() override;
 };
+
+#endif

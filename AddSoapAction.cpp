@@ -1,9 +1,9 @@
 #include "AddSoapAction.h"
 
-void execute() {
+void AddSoapAction::execute() {
         
 }
 
-bool isReady() {
+bool AddSoapAction::isReady() {
     return true;
 }

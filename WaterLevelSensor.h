@@ -1,3 +1,6 @@
+#ifndef WATERLEVELSENSOR_H
+#define WATERLEVELSENSOR_H
+
 #include "Sensor.h"
 
 class WaterLevelSensor : public Sensor {
@@ -7,3 +10,5 @@ class WaterLevelSensor : public Sensor {
     private:
       bool maxLevel;
 };
+
+#endif

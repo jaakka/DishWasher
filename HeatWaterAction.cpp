@@ -1,9 +1,9 @@
 #include "HeatWaterAction.h"
 
-void execute() {
+void HeatWaterAction::execute() {
         
 }
 
-bool isReady() {
+bool HeatWaterAction::isReady() {
     return true;
 }

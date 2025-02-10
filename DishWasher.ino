@@ -5,13 +5,11 @@
 UserControl userControl;
 SensorHandler sensorHandler;
 
-
-
-void Setup() {
-    userControl.Begin();
-    sensorHandler.Begin();
+void setup() {
+    userControl.begin();
+    sensorHandler.begin();
 }
 
-void Loop() {
-    sensorHandler.Loop();
+void loop() {
+    sensorHandler.loop();
 }

@@ -1,21 +1,21 @@
 #include "UserControl.h"
 
-void Begin() {
+void UserControl::begin() {
 
 }
 
-void Loop() {
+void UserControl::loop() {
             
 }
 
-bool userScrollRight() {
+bool UserControl::userScrollRight() {
     return true;
 }
 
-bool userScrollLeft() {
+bool UserControl::userScrollLeft() {
     return true;
 }
 
-bool userPress() {
+bool UserControl::userPress() {
     return true;
 }

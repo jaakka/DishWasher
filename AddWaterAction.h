@@ -1,3 +1,6 @@
+#ifndef ADDWATERACTION_H
+#define ADDWATERACTION_H
+
 #include "Action.h" 
 
 class AddWaterAction : public Action {
@@ -5,3 +8,5 @@ class AddWaterAction : public Action {
       void execute() override;
       bool isReady() override;
 };
+
+#endif

@@ -1,8 +1,13 @@
+#ifndef USERCONTROL_H
+#define USERCONTROL_H
+
 class UserControl {
   public:
-    void Begin();
-    void Loop();
+    void begin();
+    void loop();
     bool userScrollRight();
     bool userScrollLeft();
     bool userPress();
 };
+
+#endif

@@ -5,6 +5,7 @@ class Action {
     public:
       virtual void execute() = 0;
       virtual bool isReady() = 0;
+      virtual int timeLeft() = 0;
 };
 
 #endif

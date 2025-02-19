@@ -10,7 +10,7 @@ QuickWashProgram::QuickWashProgram() {
 }
   
 void QuickWashProgram::loop() {
-  
+   
 }
       
 int QuickWashProgram::getDurationMs() {

@@ -1,15 +1,12 @@
-#include "UserControl.h"
-#include "SensorHandler.h"
-#include "Action.h"
+#include "DishWasher.h"
 
-UserControl userControl;
-SensorHandler sensorHandler;
+DishWasher dishWasher;
 
 void setup() {
-    userControl.begin();
-    sensorHandler.begin();
+    Serial.begin(9600);
+    dishWasher.begin();
 }
 
 void loop() {
-    sensorHandler.loop();
+    dishWasher.loop();
 }

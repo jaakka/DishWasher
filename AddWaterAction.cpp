@@ -7,3 +7,7 @@ void AddWaterAction::execute() {
 bool AddWaterAction::isReady() {
   return true;
 }
+
+int AddWaterAction::timeLeft() {
+  return 0;
+}

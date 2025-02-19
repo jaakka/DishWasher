@@ -7,3 +7,7 @@ void HeatWaterAction::execute() {
 bool HeatWaterAction::isReady() {
     return true;
 }
+
+int HeatWaterAction::timeLeft() {
+    return 0;
+}

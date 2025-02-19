@@ -1,8 +1,9 @@
 #include "TemperatureSensor.h"
 
-TemperatureSensor::TemperatureSensor() {
-
+TemperatureSensor::TemperatureSensor() : oneWire(PIN_TemperatureSensor), dallasTemperature(&oneWire) {
+    dallasTemperature.begin(); 
 }
+
 
 void TemperatureSensor::loop() {
 

@@ -7,6 +7,7 @@ class AddSoapAction : public Action {
     public:
       void execute() override;
       bool isReady() override;
+      int timeLeft() override;
 };
 
 #endif

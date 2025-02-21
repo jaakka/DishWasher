@@ -12,11 +12,14 @@ class UserControl {
     bool userScrollRight();
     bool userScrollLeft();
     bool userPress();
+    static void UpdateEncoderScroll();
   private:  
+    unsigned long last_action;
+    unsigned long last_press;
+    static volatile int lastEncoded;
+    static volatile int pos;
+    static volatile int lastPos;
     int buttonValue;
-    int buttonValues[10]; 
-    void updateButtonValues(int value);
-    int averageButtonValues();
 };
 
 #endif

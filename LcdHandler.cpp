@@ -1,6 +1,7 @@
 #include "LcdHandler.h"
 #include "Wiring.h"
 #include <Arduino.h>
+#include "LcdValues.h"
 
 LcdHandler::LcdHandler() : LcdSerial(LCD_RX, LCD_TX) {
   LcdSerial.begin(9600);
@@ -9,8 +10,8 @@ LcdHandler::LcdHandler() : LcdSerial(LCD_RX, LCD_TX) {
 void LcdHandler::begin() {
   LcdClear();
   Serial.println("LCD initialized");
-  UpdateText(0,"Pikapesu");
-  UpdateText(1,"1t 30m"); 
+  //UpdateText(0,"Pikapesu");
+  //UpdateText(1,"1t 30m"); 
 }
 
 void LcdHandler::SendLcdCommand(String cmd)
@@ -33,8 +34,8 @@ void LcdHandler::UpdateImage(int elementId, int imageId)
 
 void LcdHandler::LcdClear()
 {
-  UpdateImage(2, 65);
-  UpdateImage(3, 64);
-  UpdateImage(4, 63);
-  UpdateImage(5, 62);
+  UpdateImage(2, IMG_LEFT_TOP_EMPTY);
+  UpdateImage(3, IMG_LEFT_BOTTOM_EMPTY);
+  UpdateImage(4, IMG_RIGHT_BOTTOM_EMPTY);
+  UpdateImage(5, IMG_RIGHT_TOP_EMPTY);
 }

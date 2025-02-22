@@ -10,6 +10,21 @@ class SensorHandler
     Sensor* sensors[TOTAL_SENSORS];
     void begin();
     void loop();
+    bool doorIsOpen();
+    bool doorIsClosed();
+    bool floodDetected();
+    bool noFloodDetected();
+    bool overheating();
+    bool notOverheating();
+    bool waterLevelNotMax();
+    bool waterLevelMax();
+    bool waterAnalogQualityGood();
+    bool waterAnalogQualityBad();
+    float getTemperature();
+    float getQuality();
+
+  private:
+    void printDebugMsg();
 };
 
 #endif

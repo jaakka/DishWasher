@@ -4,6 +4,8 @@
 class Sensor {
     public:
       virtual void loop() = 0;
+      bool sensorState;
+      float sensorValue;
 };
 
 #endif

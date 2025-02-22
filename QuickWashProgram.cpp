@@ -5,7 +5,7 @@
 
 QuickWashProgram::QuickWashProgram() {
     actions[0] = new AddWaterAction();
-    actions[1] = new HeatWaterAction();
+    actions[1] = new HeatWaterAction(50);
     actions[2] = new AddSoapAction();
 }
   

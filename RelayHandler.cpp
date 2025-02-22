@@ -10,6 +10,11 @@ void RelayHandler::begin() {
     pinMode(SOAPDOOR_RELAY_PIN, OUTPUT);
     pinMode(POWERCONTROL_RELAY_PIN, OUTPUT);
     digitalWrite(POWERCONTROL_RELAY_PIN, HIGH);
+    digitalWrite(VALVE_RELAY_PIN, LOW);
+    digitalWrite(PUMPOUT_RELAY_PIN, LOW);
+    digitalWrite(PUMPWASH_RELAY_PIN, LOW);
+    digitalWrite(HEATER_RELAY_PIN, LOW);
+    digitalWrite(SOAPDOOR_RELAY_PIN, LOW);
 }  
 
 void RelayHandler::mainPowerOff() {

@@ -5,9 +5,11 @@
 
 class HeatWaterAction : public Action {
   public:
+    HeatWaterAction(int temp);
     void execute() override;
     bool isReady() override;
     int timeLeft() override;
+    
 };
 
 #endif

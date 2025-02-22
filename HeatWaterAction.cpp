@@ -11,3 +11,7 @@ bool HeatWaterAction::isReady() {
 int HeatWaterAction::timeLeft() {
     return 0;
 }
+
+HeatWaterAction::HeatWaterAction(int temp) {
+
+}

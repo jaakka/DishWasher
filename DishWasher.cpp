@@ -10,17 +10,37 @@ void DishWasher::begin() {
   relayHandler.begin();
   userControl.begin();
   lcdHandler.begin();
-  updateMenu();
+  changePage(PAGE_MAIN);
+}
+
+void DishWasher::updateCurrentPage() {
+  switch (pageId)
+  {
+    case PAGE_MAIN:
+      updateMenu();
+      break;
+    case PAGE_SETTINGS:
+      updateSettings();
+      break;
+  }
+}
+
+void DishWasher::updateSettings() {
+  lcdHandler.DrawCircleBackground(BgImageRightTop::TWO);
+  lcdHandler.DrawCircleBackground(BgImageRightBottom::ONE);
+  lcdHandler.DrawCircleBackground(BgImageLeftBottom::TWO);
+  lcdHandler.DrawCircleBackground(BgImageLeftTop::TWO);
 }
 
 void DishWasher::updateMenu() {
 
-  if(menuPos != 1 && menuPos != 2) {
+  // Draw circle
+  if(selection != MENU_QUICKWASH && selection != MENU_COLDWASH) {
     lcdHandler.DrawCircleBackground(BgImageRightTop::TWO);
     lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_1,SmallIcon::SOAP);
     lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_2,SmallIcon::SNOWFLAKE);
   } else {
-    if(menuPos == 1) {
+    if(selection == MENU_QUICKWASH) {
       lcdHandler.DrawCircleBackground(BgImageRightTop::TWO_1_SELECTED);
       lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_1,SmallIconSelected::SOAP);
       lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_2,SmallIcon::SNOWFLAKE);
@@ -31,7 +51,7 @@ void DishWasher::updateMenu() {
     }
   }
 
-  if(menuPos != 3) {
+  if(selection != MENU_POWERWASH) {
     lcdHandler.DrawCircleBackground(BgImageRightBottom::ONE);
     lcdHandler.DrawCircleIcon(SmallIconPositionRightBottom::ONE,SmallIcon::FIRE);
   } else {
@@ -39,12 +59,12 @@ void DishWasher::updateMenu() {
     lcdHandler.DrawCircleIcon(SmallIconPositionRightBottom::ONE,SmallIconSelected::FIRE);
   }
 
-  if(menuPos != 4 && menuPos != 5) {
+  if(selection != MENU_ECOWASH && selection != MENU_HANDWASH) {
     lcdHandler.DrawCircleBackground(BgImageLeftBottom::TWO);
     lcdHandler.DrawCircleIcon(SmallIconPositionLeftBottom::TWO_1,SmallIcon::LEAF);
     lcdHandler.DrawCircleIcon(SmallIconPositionLeftBottom::TWO_2,SmallIcon::CONTROLLER);
   } else {
-    if(menuPos == 4) {
+    if(selection == MENU_ECOWASH) {
       lcdHandler.DrawCircleBackground(BgImageLeftBottom::TWO_1_SELECTED);
       lcdHandler.DrawCircleIcon(SmallIconPositionLeftBottom::TWO_1,SmallIconSelected::LEAF);
       lcdHandler.DrawCircleIcon(SmallIconPositionLeftBottom::TWO_2,SmallIcon::CONTROLLER);
@@ -55,12 +75,12 @@ void DishWasher::updateMenu() {
     }
   }
 
-  if(menuPos != 6 && menuPos != 7) {
+  if(selection != MENU_SETTINGS && selection != MENU_POWEROFF) {
     lcdHandler.DrawCircleBackground(BgImageLeftTop::TWO);
     lcdHandler.DrawCircleIcon(SmallIconPositionLeftTop::TWO_1,SmallIcon::TOOLS);
     lcdHandler.DrawCircleIcon(SmallIconPositionLeftTop::TWO_2,SmallIcon::CABLE);
   } else {
-    if(menuPos == 6) {
+    if(selection == MENU_SETTINGS) {
       lcdHandler.DrawCircleBackground(BgImageLeftTop::TWO_1_SELECTED);
       lcdHandler.DrawCircleIcon(SmallIconPositionLeftTop::TWO_1,SmallIconSelected::TOOLS);
       lcdHandler.DrawCircleIcon(SmallIconPositionLeftTop::TWO_2,SmallIcon::CABLE);
@@ -71,43 +91,44 @@ void DishWasher::updateMenu() {
     }
   }
 
-  switch (menuPos) {
-    case 0: // Nothing selected
+  // Draw center
+  switch (selection) {
+    case MENU_NOSELECTED:
       lcdHandler.DrawLargeIcon(LargeIcon::HOME);
       lcdHandler.DrawText(TextPosition::CENTER_TOP, "Valitse");
       lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, "toiminto");
       break;
-    case 1: // Fast
+    case MENU_QUICKWASH: // Fast
       lcdHandler.DrawLargeIcon(LargeIcon::SOAP);
       lcdHandler.DrawText(TextPosition::CENTER_TOP, "Pikapesu");
       lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, "30m");
       break;
-    case 2: // Cold
+    case MENU_COLDWASH: // Cold
       lcdHandler.DrawLargeIcon(LargeIcon::SNOWFLAKE);
       lcdHandler.DrawText(TextPosition::CENTER_TOP, "Kalasia");
       lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, "30m");
       break;
-    case 3: // Long
+    case MENU_POWERWASH: // Long
       lcdHandler.DrawLargeIcon(LargeIcon::FIRE);
       lcdHandler.DrawText(TextPosition::CENTER_TOP, "Superpesu");
       lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, "1h");
       break;
-    case 4: // Eco
+    case MENU_ECOWASH: // Eco
       lcdHandler.DrawLargeIcon(LargeIcon::LEAF);
       lcdHandler.DrawText(TextPosition::CENTER_TOP, "Ekopesu");
       lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, "30m");
       break;
-    case 5: // Hand
+    case MENU_HANDWASH: // Hand
       lcdHandler.DrawLargeIcon(LargeIcon::CONTROLLER);
       lcdHandler.DrawText(TextPosition::CENTER_TOP, "Manuaali");
       lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, "ohjaus");
       break;
-    case 6: // Service
+    case MENU_SETTINGS: // Service
       lcdHandler.DrawLargeIcon(LargeIcon::TOOLS);
       lcdHandler.DrawText(TextPosition::CENTER_TOP, "Huolto");
       lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, "valikko");
       break;
-    case 7: // Power
+    case MENU_POWEROFF: // Power
       lcdHandler.DrawLargeIcon(LargeIcon::CABLE);
       lcdHandler.DrawText(TextPosition::CENTER_TOP, "Sammuta");
       lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, "virta");
@@ -116,26 +137,58 @@ void DishWasher::updateMenu() {
 
 }
 
+void DishWasher::changePage(int newPage) {
+  switch (newPage) {
+
+    case PAGE_MAIN:
+      selection = MENU_NOSELECTED;
+      minSelection = 1;
+      maxSelection = 7;
+      break;
+    
+    case PAGE_SETTINGS:
+      selection = 1;
+      minSelection = 1;
+      maxSelection = 2;
+      break;
+  }
+  
+  pageId = newPage;
+  updateCurrentPage();
+}
+
 void DishWasher::loop() {
   userControl.loop();
-  powerControl();
+  userActions();
 }
 
 DishWasher::DishWasher() {
   buttonPressed = true;
 }
 
-void DishWasher::powerControl() {
+void DishWasher::userActions() {
   if(userControl.userPress()) {
     if(!buttonPressed) {
-      switch (menuPos) {
-        case 7:
-          lcdHandler.LcdClear();
-          lcdHandler.DrawLargeIcon(LargeIcon::CABLE);
-          lcdHandler.DrawText(TextPosition::CENTER_TOP, "Heippa!");
-          delay(1000);
-          relayHandler.mainPowerOff();
-          break;
+      
+      switch (pageId) {
+        case PAGE_MAIN:
+          switch (selection) {
+
+            case MENU_POWEROFF:
+              lcdHandler.LcdClear();
+              lcdHandler.DrawLargeIcon(LargeIcon::CABLE);
+              lcdHandler.DrawText(TextPosition::CENTER_TOP, "Heippa!");
+              delay(1000);
+              relayHandler.mainPowerOff();
+              break; // Selection break
+            
+            case MENU_SETTINGS:
+              changePage(PAGE_SETTINGS);
+              break;
+          }
+          break; // Page break 
+
+        
       }
     }
   }
@@ -145,14 +198,24 @@ void DishWasher::powerControl() {
   }
 
   if(userControl.userScrollLeft()) {
-    Serial.println("vasen");
-    if(menuPos>1){menuPos--;}else{menuPos = 7;}
-    updateMenu();
+    
+    if(selection > minSelection) {
+      selection--;
+    } else {
+      selection = maxSelection;
+    }
+
+    updateCurrentPage();
   }
   if(userControl.userScrollRight()) {
-    Serial.println("right");
-    if(menuPos<7){menuPos++;}else{menuPos = 1;}
-    updateMenu();
+
+    if(selection<maxSelection) {
+      selection++;
+    } else {
+      selection = minSelection;
+    }
+
+    updateCurrentPage();
   }
 
 }

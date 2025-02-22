@@ -5,16 +5,13 @@
 #include <DallasTemperature.h>
 #include "Sensor.h"
 
-#define PIN_TemperatureSensor 12
-
 class TemperatureSensor : public Sensor {
   public:
-    
     TemperatureSensor();
     void loop() override;
+    // float sensorValue; Defined in Sensor.h
 
   private:
-
     OneWire oneWire;              
     DallasTemperature dallasTemperature;
 };

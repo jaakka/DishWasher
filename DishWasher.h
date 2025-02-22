@@ -11,6 +11,8 @@ class DishWasher {
     void begin();
     void loop();
   private:
+    void updateMenu(); 
+    int menuPos = 0;
     UserControl userControl;
     RelayHandler relayHandler;
     LcdHandler lcdHandler;

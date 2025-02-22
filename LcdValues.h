@@ -1,106 +1,137 @@
 #ifndef IMAGES_H
 #define IMAGES_H
 
+/*
+TEST GRAPHICS
+
+p3.pic=20
+p2.pic=6
+p5.pic=48
+p4.pic=46
+t0.txt="Valitse"
+t1.txt="toiminto"
+p1.pic=2
+
+p15.pic=69
+p16.pic=83
+
+p23.pic=66
+p6.pic=76
+p7.pic=80
+
+p36.pic=97
+p34.pic=94
+
+
+*/
+
+
 // Text positions
-enum TextPosition {
+enum class TextPosition {
+
     CENTER_TOP = 0,
     CENTER_BOTTOM = 1
+
 };
 
 // Icon positions
-enum LargeIconPosition {
+enum class LargeIconPosition {
+
     CENTER_ICON = 1
+
 };
 
-enum SmallIconPositionRightTop {
+enum class SmallIconPositionRightTop {
 
     // Right top circle icons
-    RIGHT_TOP_ONE = 0,
+    ONE = 0,
 
-    RIGHT_TOP_TWO_1 = 7,
-    RIGHT_TOP_TWO_2 = 6,
+    TWO_1 = 7,
+    TWO_2 = 6,
 
-    RIGHT_TOP_TREE_1 = 8,
-    RIGHT_TOP_TREE_2 = 0,
-    RIGHT_TOP_TREE_3 = 9,
+    TREE_1 = 8,
+    TREE_2 = 0,
+    TREE_3 = 9,
 
-    RIGHT_TOP_FOUR_1 = 10,
-    RIGHT_TOP_FOUR_2 = 11,
-    RIGHT_TOP_FOUR_3 = 12,
-    RIGHT_TOP_FOUR_4 = 13
+    FOUR_1 = 10,
+    FOUR_2 = 11,
+    FOUR_3 = 12,
+    FOUR_4 = 13
 
 };
 
-enum SmallIconPositionRightBottom {
+enum class SmallIconPositionRightBottom {
 
     // Right bottom circle icons
-    RIGHT_BOTTOM_ONE = 23,
+    ONE = 23,
 
-    RIGHT_BOTTOM_TWO_1 = 25,
-    RIGHT_BOTTOM_TWO_2 = 24,
+    TWO_1 = 25,
+    TWO_2 = 24,
 
-    RIGHT_BOTTOM_TREE_1 = 27,
-    RIGHT_BOTTOM_TREE_2 = 23,
-    RIGHT_BOTTOM_TREE_3 = 26,
+    TREE_1 = 27,
+    TREE_2 = 23,
+    TREE_3 = 26,
 
-    RIGHT_BOTTOM_FOUR_1 = 28,
-    RIGHT_BOTTOM_FOUR_2 = 29,
-    RIGHT_BOTTOM_FOUR_3 = 30,
-    RIGHT_BOTTOM_FOUR_4 = 31
+    FOUR_1 = 28,
+    FOUR_2 = 29,
+    FOUR_3 = 30,
+    FOUR_4 = 31
 
 };
 
-enum SmallIconPositionLeftBottom {
+enum class SmallIconPositionLeftBottom {
 
     // Left bottom circle icons
-    LEFT_BOTTOM_ONE = 32,
+    ONE = 32,
 
-    LEFT_BOTTOM_TWO_1 = 33,
-    LEFT_BOTTOM_TWO_2 = 34,
+    TWO_1 = 33,
+    TWO_2 = 34,
 
-    LEFT_BOTTOM_TREE_1 = 36,
-    LEFT_BOTTOM_TREE_2 = 32,
-    LEFT_BOTTOM_TREE_3 = 35,
+    TREE_1 = 36,
+    TREE_2 = 32,
+    TREE_3 = 35,
 
-    LEFT_BOTTOM_FOUR_1 = 37,
-    LEFT_BOTTOM_FOUR_2 = 38,
-    LEFT_BOTTOM_FOUR_3 = 39,
-    LEFT_BOTTOM_FOUR_4 = 40
+    FOUR_1 = 37,
+    FOUR_2 = 38,
+    FOUR_3 = 39,
+    FOUR_4 = 40
 
 };
 
-enum SmallIconPositionLeftTop {
+enum class SmallIconPositionLeftTop {
 
     // Left top circle icons
-    LEFT_TOP_ONE = 0,
+    ONE = 0,
 
-    LEFT_TOP_TWO_1 = 7,
-    LEFT_TOP_TWO_2 = 6,
+    TWO_1 = 7,
+    TWO_2 = 6,
 
-    LEFT_TOP_TREE_1 = 8,
-    LEFT_TOP_TREE_2 = 0,
-    LEFT_TOP_TREE_3 = 9,
+    TREE_1 = 8,
+    TREE_2 = 0,
+    TREE_3 = 9,
 
-    LEFT_TOP_FOUR_1 = 10,
-    LEFT_TOP_FOUR_2 = 11,
-    LEFT_TOP_FOUR_3 = 12,
-    LEFT_TOP_FOUR_4 = 13
+    FOUR_1 = 10,
+    FOUR_2 = 11,
+    FOUR_3 = 12,
+    FOUR_4 = 13
 
 };
 
 // Background image positions
 
-enum BgImagePosition {
+enum class BgImagePosition {
+
     RIGHT_TOP = 5,
     RIGHT_BOTTOM = 4,
     LEFT_BOTTOM = 3,
     LEFT_TOP = 2
+
 };
 
 
 // Background images
 
-enum BgImageRightTop {
+enum class BgImageRightTop {
 
     // Circle right top
     EMPTY = 62,
@@ -122,9 +153,10 @@ enum BgImageRightTop {
     FOUR_2_SELECTED = 57,
     FOUR_3_SELECTED = 58,
     FOUR_4_SELECTED = 59
+
 };
 
-enum BgImageRightBottom {
+enum class BgImageRightBottom {
 
     // Circle right bottom
     EMPTY = 63,
@@ -146,9 +178,10 @@ enum BgImageRightBottom {
     FOUR_2_SELECTED = 43,
     FOUR_3_SELECTED = 44,
     FOUR_4_SELECTED = 45
+
 };
 
-enum BgImageLeftBottom {
+enum class BgImageLeftBottom {
 
     // Circle left bottom
     EMPTY = 64,
@@ -170,9 +203,10 @@ enum BgImageLeftBottom {
     FOUR_2_SELECTED = 29,
     FOUR_3_SELECTED = 30,
     FOUR_4_SELECTED = 31
+
 };
 
-enum BgImageLeftTop {
+enum class BgImageLeftTop {
 
     // Circle left top
     EMPTY = 65,
@@ -194,5 +228,65 @@ enum BgImageLeftTop {
     FOUR_2_SELECTED = 15,
     FOUR_3_SELECTED = 16,
     FOUR_4_SELECTED = 17
+
+};
+
+enum class LargeIcon {
+
+    WATER = 0,
+    FIRE = 1,
+    SOAP = 2,
+    STORM = 3,
+    RESTART = 4,
+    PAUSE = 5,
+    HOME = 72,
+    CABLE = 75,
+    TOOLS = 79,
+    SNOWFLAKE = 82,
+    TIME = 86,
+    CONTROLLER = 93,
+    LEAF = 96
+    
+};
+
+enum class SmallIcon {
+
+    NONE = 0,
+
+    FIRE = 66,
+    PAUSE = 67,
+    RESTART = 68,
+    SOAP = 69,
+    STORM = 70,
+    WATER = 71,
+    CABLE = 76,
+    TOOLS = 80,
+    SNOWFLAKE = 83,
+    TIME = 87,
+    HOME = 89,
+    CONTROLLER = 94,
+    LEAF = 97
+
+};
+
+enum class SmallIconSelected {
+
+    NONE = 0,
+
+    FIRE = 91,
+    PAUSE = 73,
+    RESTART = 78,
+    SOAP = 85,
+    STORM = 92,
+    WATER = 74,
+    CABLE = 77,
+    TOOLS = 81,
+    SNOWFLAKE = 84,
+    TIME = 88,
+    HOME = 90,
+    CONTROLLER = 95,
+    LEAF = 98
+
+};
 
 #endif

@@ -36,7 +36,7 @@ void UserControl::loop() {
 }
 
 bool UserControl::userScrollRight() {
-  if (pos < lastPos) {
+  if (pos < lastPos-3) {
     lastPos = pos;
     if(last_action+100<millis()) {
       last_action=millis(); 
@@ -47,7 +47,7 @@ bool UserControl::userScrollRight() {
 }
 
 bool UserControl::userScrollLeft() {
-  if (pos > lastPos) {
+  if (pos > lastPos+3) {
     lastPos = pos;
     if(last_action+100<millis()) {
       last_action=millis(); 

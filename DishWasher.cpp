@@ -18,16 +18,16 @@ void DishWasher::updateMenu() {
   if(menuPos != 1 && menuPos != 2) {
     lcdHandler.DrawCircleBackground(BgImageRightTop::TWO);
     lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_1,SmallIcon::SOAP);
-    lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_1,SmallIcon::SNOWFLAKE);
+    lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_2,SmallIcon::SNOWFLAKE);
   } else {
     if(menuPos == 1) {
       lcdHandler.DrawCircleBackground(BgImageRightTop::TWO_1_SELECTED);
       lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_1,SmallIconSelected::SOAP);
-      lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_1,SmallIcon::SNOWFLAKE);
+      lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_2,SmallIcon::SNOWFLAKE);
     } else {
       lcdHandler.DrawCircleBackground(BgImageRightTop::TWO_2_SELECTED);
       lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_1,SmallIcon::SOAP);
-      lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_1,SmallIconSelected::SNOWFLAKE);
+      lcdHandler.DrawCircleIcon(SmallIconPositionRightTop::TWO_2,SmallIconSelected::SNOWFLAKE);
     }
   }
 

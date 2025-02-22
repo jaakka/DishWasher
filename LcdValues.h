@@ -44,19 +44,19 @@ enum class LargeIconPosition {
 enum class SmallIconPositionRightTop {
 
     // Right top circle icons
-    ONE = 0,
+    ONE = 14,
 
-    TWO_1 = 7,
-    TWO_2 = 6,
+    TWO_1 = 15,
+    TWO_2 = 16,
 
-    TREE_1 = 8,
-    TREE_2 = 0,
-    TREE_3 = 9,
+    TREE_1 = 15,
+    TREE_2 = 14,
+    TREE_3 = 16,
 
-    FOUR_1 = 10,
-    FOUR_2 = 11,
-    FOUR_3 = 12,
-    FOUR_4 = 13
+    FOUR_1 = 19,
+    FOUR_2 = 20,
+    FOUR_3 = 21,
+    FOUR_4 = 22
 
 };
 

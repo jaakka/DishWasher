@@ -3,13 +3,6 @@
 #include <Arduino.h>
 #include "LcdValues.h"
 
-LcdHandler::LcdHandler() : LcdSerial(LCD_RX, LCD_TX) {
-  LcdSerial.begin(9600);
-}
-
-void LcdHandler::begin() {
-  LcdClear();
-}
 
 void LcdHandler::SendLcdCommand(String cmd)
 {
@@ -17,6 +10,16 @@ void LcdHandler::SendLcdCommand(String cmd)
   LcdSerial.write(0xFF); 
   LcdSerial.write(0xFF);
   LcdSerial.write(0xFF);
+}
+
+LcdHandler::LcdHandler() : LcdSerial(LCD_RX, LCD_TX) {
+  LcdSerial.begin(9600);
+  SendLcdCommand("baud=115200");
+  LcdSerial.begin(115200);
+}
+
+void LcdHandler::begin() {
+  LcdClear();
 }
 
 void LcdHandler::UpdateText(int elementId, String txt)

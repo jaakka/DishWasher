@@ -3,12 +3,13 @@
 
 #include "RelayHandler.h"
 #include "SensorHandler.h"
+#include "SafetyHandler.h"
 
 #include "Action.h" 
 
 class AddWaterAction : public Action {
     public:
-      AddWaterAction(SensorHandler* sensorHandler, RelayHandler* relayHandler);
+      AddWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler);
       void execute() override;
       ActionState status() override;
       int timeLeft() override;
@@ -22,6 +23,7 @@ class AddWaterAction : public Action {
       bool actionStarted;
       SensorHandler* sensorHandler;
       RelayHandler* relayHandler;
+      SafetyHandler* safetyHandler;
 };
 
 #endif

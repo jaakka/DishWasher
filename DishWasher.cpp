@@ -1,6 +1,7 @@
 #include "DishWasher.h"
 #include "UserControl.h"
 #include "RelayHandler.h"
+#include "SafetyHandler.h"
 #include <Arduino.h>
 #include "Config.h"
 #include "LcdHandler.h"
@@ -11,6 +12,7 @@ void DishWasher::begin() {
   userControl.begin();
   lcdHandler.begin();
   sensorHandler.begin();	
+  safetyHandler.begin();
   changePage(PAGE_MAIN);
 }
 
@@ -159,13 +161,14 @@ void DishWasher::changePage(int newPage) {
 }
 
 void DishWasher::loop() {
+  safetyHandler.loop();
   quickWashProgram.loop();
   userControl.loop();
   sensorHandler.loop();
   userActions();
 }
 
-DishWasher::DishWasher() : quickWashProgram(&relayHandler, &sensorHandler) {
+DishWasher::DishWasher() : safetyHandler(&sensorHandler), quickWashProgram(&safetyHandler, &relayHandler, &sensorHandler) {
   buttonPressed = true;
 }
 

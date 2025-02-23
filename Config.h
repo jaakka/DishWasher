@@ -11,6 +11,6 @@
 #define ENABLE_ACTIONS_DEBUG true
 #define ACTION_SOAPDOOR_WAIT 2 // seconds
 #define MAX_ALLOWED_TIME_ADD_WATER 10 // seconds
-#define MAX_ALLOWED_TIME_HEAT_WATER 1200 // seconds
+#define MAX_ALLOWED_TIME_HEAT_WATER 10 // seconds
 
 #endif

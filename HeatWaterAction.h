@@ -2,11 +2,12 @@
 #define HEAT_WATER_ACTION_H
 #include "RelayHandler.h"
 #include "SensorHandler.h"
+#include "SafetyHandler.h"
 #include "Action.h"
 
 class HeatWaterAction : public Action {
   public:
-    HeatWaterAction(SensorHandler* sensorHandler, RelayHandler* relayHandler, int temp);
+    HeatWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler, int temp);
     void execute() override;
     ActionState status() override;
     int timeLeft() override;
@@ -15,6 +16,8 @@ class HeatWaterAction : public Action {
   private:
     RelayHandler* relayHandler;
     SensorHandler* sensorHandler;
+    SafetyHandler* safetyHandler;
+    unsigned long startTime;
     int temp;
     bool actionStarted;
     int errorCode;

@@ -3,12 +3,13 @@
 
 #include "RelayHandler.h"
 #include "SensorHandler.h"
+#include "SafetyHandler.h"
 
 #include "Action.h"
 
 class AddSoapAction : public Action {
     public:
-      AddSoapAction(RelayHandler* relayHandler);
+      AddSoapAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler);
       void execute() override;
       ActionState status() override;
       int timeLeft() override;
@@ -19,6 +20,7 @@ class AddSoapAction : public Action {
       bool actionFinished;
       unsigned long startTime;
       RelayHandler* relayHandler;
+      SafetyHandler* safetyHandler;
 };
 
 #endif

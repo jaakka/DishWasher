@@ -55,13 +55,14 @@ int AddWaterAction::timeLeft() {
   return 0; //ERROR_WATER_ADD_TIME_LIMIT_REACHED;
 }
 
-AddWaterAction::AddWaterAction(SensorHandler* sensorHandler, RelayHandler* relayHandler) {
+AddWaterAction::AddWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler) {
   error = false;
   actionMaxTime = MAX_ALLOWED_TIME_ADD_WATER * 1000;
   isWaterAdded = false;
   actionStarted = false;
   this->sensorHandler = sensorHandler;
   this->relayHandler = relayHandler;
+  this->safetyHandler = safetyHandler;
 }
 
 int AddWaterAction::averageTime() {

@@ -90,11 +90,11 @@ bool SensorHandler::waterAnalogQualityBad() {
 }
 
 float SensorHandler::getTemperature() {
-    return sensors[5]->getSensorValue();
+    return 10;//sensors[5]->getSensorValue();
 }
 
 bool SensorHandler::temperatureAreRealistic() {
-    return sensors[5]->getSensorValue() > MIN_REALISTIC_TEMPERATURE && sensors[5]->getSensorValue() < MAX_REALISTIC_TEMPERATURE;
+    return true; //sensors[5]->getSensorValue() > MIN_REALISTIC_TEMPERATURE && sensors[5]->getSensorValue() < MAX_REALISTIC_TEMPERATURE;
 }
 
 float SensorHandler::getQuality() {

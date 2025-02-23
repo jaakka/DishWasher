@@ -5,6 +5,7 @@
 #include "RelayHandler.h"
 #include "LcdHandler.h"
 #include "SensorHandler.h"
+#include "SafetyHandler.h"
 #include "QuickWashProgram.h"
 
 #define MENU_NOSELECTED 0
@@ -40,6 +41,7 @@ class DishWasher {
     int pageId;
     int minSelection, maxSelection;
     QuickWashProgram quickWashProgram;
+    SafetyHandler safetyHandler;
     UserControl userControl;
     RelayHandler relayHandler;
     LcdHandler lcdHandler;

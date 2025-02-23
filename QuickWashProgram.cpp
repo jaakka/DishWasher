@@ -4,19 +4,16 @@
 #include "AddSoapAction.h"
 #include <Arduino.h>
 
-QuickWashProgram::QuickWashProgram(RelayHandler* relayHandler, SensorHandler* sensorHandler) {
+QuickWashProgram::QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler) {
+    this->safetyHandler = safetyHandler;
     this->relayHandler = relayHandler;
     this->sensorHandler = sensorHandler;
-
     
-    actions[0] = new AddWaterAction(sensorHandler, relayHandler);
-    actions[1] = new AddSoapAction(relayHandler);
-    actions[2] = new HeatWaterAction(sensorHandler, relayHandler, 50);
-    
-    
+    actions[0] = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
+    actions[1] = new AddSoapAction(safetyHandler, relayHandler);
+    actions[2] = new HeatWaterAction(safetyHandler, relayHandler, sensorHandler, 40);
     
     error = false;
-    
 }
   
 void QuickWashProgram::loop() {

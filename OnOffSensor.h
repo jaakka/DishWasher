@@ -7,8 +7,10 @@ class OnOffSensor : public Sensor {
     public:
         OnOffSensor(int sensorPin);
         void loop() override;
-        bool sensorState;
+        bool getSensorState() override;
+        float getSensorValue() override { return 0; };
     private:
+        int sensorValue;
         int sensorPin;
 };
 

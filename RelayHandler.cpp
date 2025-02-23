@@ -20,3 +20,27 @@ void RelayHandler::begin() {
 void RelayHandler::mainPowerOff() {
     digitalWrite(POWERCONTROL_RELAY_PIN,LOW);
 }
+
+void RelayHandler::openValve() {
+    digitalWrite(VALVE_RELAY_PIN, HIGH);
+}
+
+void RelayHandler::closeValve() {
+    digitalWrite(VALVE_RELAY_PIN, LOW);
+}
+
+void RelayHandler::openSoapDoor() {
+    digitalWrite(SOAPDOOR_RELAY_PIN, HIGH);
+}
+
+void RelayHandler::closeSoapDoor() {
+    digitalWrite(SOAPDOOR_RELAY_PIN, LOW);
+}
+
+void RelayHandler::heatWater() {
+    digitalWrite(HEATER_RELAY_PIN, HIGH);
+}
+
+void RelayHandler::stopHeatingWater() {
+    digitalWrite(HEATER_RELAY_PIN, LOW);
+}

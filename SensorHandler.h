@@ -6,7 +6,7 @@
 class SensorHandler
 {
   public:
-    static const int TOTAL_SENSORS = 2; 
+    static const int TOTAL_SENSORS = 7; 
     Sensor* sensors[TOTAL_SENSORS];
     void begin();
     void loop();
@@ -21,10 +21,13 @@ class SensorHandler
     bool waterAnalogQualityGood();
     bool waterAnalogQualityBad();
     float getTemperature();
+    bool temperatureAreRealistic();
     float getQuality();
 
   private:
     void printDebugMsg();
+    unsigned long lastDebugMsgTime = 0;
+    unsigned long lastReadTime = 0;
 };
 
 #endif

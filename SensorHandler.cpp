@@ -13,14 +13,20 @@ void SensorHandler::begin() {
     sensors[4] = new OnOffSensor(QUANTITY_SENSOR_PIN);
     sensors[5] = new TemperatureSensor();
     sensors[6] = new QualitySensor();
+
+    // NOTE - if add sensors to the array, remember to update TOTAL_SENSORS
 }  
     
 void SensorHandler::loop() {
-    for (int i = 0; i < TOTAL_SENSORS; i++) {
-        sensors[i]->loop();
+    if (millis() - lastReadTime > SENSORS_READ_INTERVAL_MS) {
+        lastReadTime = millis();
+        for (int i = 0; i < TOTAL_SENSORS; i++) {
+            sensors[i]->loop();
+        }
     }
-
-    if (ENABLE_SENSORS_DEBUG) {
+    
+    if (ENABLE_SENSORS_DEBUG && millis() - lastDebugMsgTime > SENSORS_DEBUG_INTERVAL_MS) {
+        lastDebugMsgTime = millis();
         printDebugMsg();
     }
 }
@@ -38,54 +44,59 @@ void SensorHandler::printDebugMsg() {
     Serial.print(waterAnalogQualityGood() ? "Good" : "Bad");
     Serial.print(", Temperature: ");
     Serial.print(getTemperature());
+    Serial.print(temperatureAreRealistic() ? " Realistic" : " Unrealistic");
     Serial.print(", Quality: ");
     Serial.println(getQuality());
 }
 
-bool SensorHandler::doorIsOpen() {
-    return sensors[0]->sensorState;
+bool SensorHandler::doorIsOpen() { // Flipped logic for more safety
+    return !sensors[0]->getSensorState();
 }
 
 bool SensorHandler::doorIsClosed() {
-    return !sensors[0]->sensorState;
+    return sensors[0]->getSensorState();
 }
 
-bool SensorHandler::floodDetected() {
-    return sensors[1]->sensorState;
+bool SensorHandler::floodDetected() { // Flipped logic for more safety
+    return !sensors[1]->getSensorState();
 }
 
 bool SensorHandler::noFloodDetected() {
-    return !sensors[1]->sensorState;
+    return sensors[1]->getSensorState();
 }
 
 bool SensorHandler::overheating() {
-    return sensors[2]->sensorState;
+    return sensors[2]->getSensorState();
 }
 
 bool SensorHandler::notOverheating() {
-    return !sensors[2]->sensorState;
+    return !sensors[2]->getSensorState();
 }
 
 bool SensorHandler::waterLevelNotMax() {
-    return sensors[3]->sensorState;
+    return sensors[3]->getSensorState();
 }
 
 bool SensorHandler::waterLevelMax() {
-    return !sensors[3]->sensorState;
+    return !sensors[3]->getSensorState();
 }
 
 bool SensorHandler::waterAnalogQualityGood() {
-    return sensors[4]->sensorState;
+    return sensors[4]->getSensorState();
 }
 
 bool SensorHandler::waterAnalogQualityBad() {
-    return !sensors[4]->sensorState;
+    return !sensors[4]->getSensorState();
 }
 
 float SensorHandler::getTemperature() {
-    return sensors[5]->sensorValue;
+    return sensors[5]->getSensorValue();
+}
+
+bool SensorHandler::temperatureAreRealistic() {
+    return sensors[5]->getSensorValue() > MIN_REALISTIC_TEMPERATURE && sensors[5]->getSensorValue() < MAX_REALISTIC_TEMPERATURE;
 }
 
 float SensorHandler::getQuality() {
-    return sensors[6]->sensorValue;
+    return sensors[6]->getSensorValue();
 }

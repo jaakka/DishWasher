@@ -5,10 +5,13 @@
 
 class QualitySensor : public Sensor {
   public:
-    // float sensorValue; Defined in Sensor.h
     QualitySensor();
     void begin();
     void loop();
+    bool getSensorState() override { return false; };
+    float getSensorValue() override;
+  private:
+    float sensorValue;
 };
 
 #endif

@@ -10,6 +10,7 @@ void DishWasher::begin() {
   relayHandler.begin();
   userControl.begin();
   lcdHandler.begin();
+  sensorHandler.begin();	
   changePage(PAGE_MAIN);
 }
 
@@ -158,11 +159,13 @@ void DishWasher::changePage(int newPage) {
 }
 
 void DishWasher::loop() {
+  quickWashProgram.loop();
   userControl.loop();
+  sensorHandler.loop();
   userActions();
 }
 
-DishWasher::DishWasher() {
+DishWasher::DishWasher() : quickWashProgram(&relayHandler, &sensorHandler) {
   buttonPressed = true;
 }
 

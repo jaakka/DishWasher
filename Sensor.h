@@ -4,8 +4,8 @@
 class Sensor {
     public:
       virtual void loop() = 0;
-      bool sensorState;
-      float sensorValue;
+      virtual bool getSensorState() = 0;
+      virtual float getSensorValue() = 0;
 };
 
 #endif

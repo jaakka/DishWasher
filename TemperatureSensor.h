@@ -9,11 +9,13 @@ class TemperatureSensor : public Sensor {
   public:
     TemperatureSensor();
     void loop() override;
-    // float sensorValue; Defined in Sensor.h
+    bool getSensorState() override { return false; };
+    float getSensorValue() override;
 
   private:
     OneWire oneWire;              
     DallasTemperature dallasTemperature;
+    float sensorValue;
 };
 
 #endif

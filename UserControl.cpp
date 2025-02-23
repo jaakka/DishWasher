@@ -32,7 +32,6 @@ void UserControl::UpdateEncoderScroll()
 
 void UserControl::loop() {
   buttonValue = analogRead(PIN_EncoderPress);
-  Serial.println(buttonValue);
 }
 
 bool UserControl::userScrollRight() {

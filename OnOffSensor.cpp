@@ -4,14 +4,14 @@
 
 OnOffSensor::OnOffSensor(int sensorPin) {
     this->sensorPin = sensorPin;
-    sensorState = false;
     pinMode(sensorPin, INPUT);
 }
 
-void OnOffSensor::loop() {;
-    if (analogRead(sensorPin) > BOOL_SENSORS_MIN_DETECT_VALUE) {
-        sensorState = true;
-    } else {
-        sensorState = false;
-    }
+void OnOffSensor::loop() {
+    sensorValue = analogRead(sensorPin);
 }
+
+bool OnOffSensor::getSensorState() {
+    return sensorValue > BOOL_SENSORS_MIN_DETECT_VALUE;
+}
+

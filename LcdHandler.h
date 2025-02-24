@@ -1,9 +1,11 @@
 #ifndef LCDHANDLER_H
 #define LCDHANDLER_H
 
-#include <SoftwareSerial.h>
 #include "LcdHandler.h"
 #include "LcdValues.h"
+#include "Wiring.h"
+#include "LcdValues.h"
+#include <SoftwareSerial.h>
 #include <Arduino.h>
 
 class LcdHandler 

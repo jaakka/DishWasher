@@ -1,5 +1,4 @@
 #include "SafetyHandler.h"
-#include "SensorHandler.h"
 
 SafetyHandler::SafetyHandler(SensorHandler* sensorHandler) {
     this->sensorHandler = sensorHandler;

@@ -1,9 +1,4 @@
-#include "OnOffSensor.h"
-#include "TemperatureSensor.h"
-#include "QualitySensor.h"
 #include "SensorHandler.h"
-#include "Wiring.h"
-#include "Config.h"
 
 void SensorHandler::begin() {
     sensors[0] = new OnOffSensor(DOOR_SENSOR_PIN);

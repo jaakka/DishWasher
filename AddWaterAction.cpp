@@ -1,7 +1,4 @@
 #include "AddWaterAction.h"
-#include "Config.h"
-#include <Arduino.h>
-#include "ErrorCodes.h"
 
 void AddWaterAction::execute() {
   if(!isWaterAdded && !error) {
@@ -25,6 +22,11 @@ void AddWaterAction::execute() {
         Serial.print(usedTime);
         Serial.println(" ms");
       }
+
+      if (ENABLE_MACHINE_LEARNING) {
+        MachineLearning::learnData(MachineData::FillTime, usedTime / 1000);
+      }
+
       relayHandler->closeValve();
       isWaterAdded = true;
     }
@@ -51,8 +53,8 @@ ActionState AddWaterAction::status() {
   }
 }
 
-int AddWaterAction::timeLeft() {
-  return 0; //ERROR_WATER_ADD_TIME_LIMIT_REACHED;
+int AddWaterAction::timeLeftInSeconds() {
+  return averageTime - ((millis() - actionStartTime) / 1000);
 }
 
 AddWaterAction::AddWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler) {
@@ -63,10 +65,16 @@ AddWaterAction::AddWaterAction(SafetyHandler* safetyHandler, RelayHandler* relay
   this->sensorHandler = sensorHandler;
   this->relayHandler = relayHandler;
   this->safetyHandler = safetyHandler;
+
+  if (ENABLE_MACHINE_LEARNING) {
+    averageTime = MachineLearning::getValue(MachineData::FillTime);
+  } else {
+    averageTime = MAX_ALLOWED_TIME_ADD_WATER;
+  }
 }
 
-int AddWaterAction::averageTime() {
-  return 10000;
+int AddWaterAction::averageTimeInSeconds() {
+  return averageTime;
 }
 
 int AddWaterAction::getErrorCode() {

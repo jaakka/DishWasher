@@ -1,6 +1,10 @@
 #ifndef USERCONTROL_H
 #define USERCONTROL_H
 
+#include <HardwareSerial.h>
+#include <Arduino.h>
+#include "Wiring.h"
+
 #define PIN_EncoderLeft 2
 #define PIN_EncoderRight 3
 #define PIN_EncoderPress A6

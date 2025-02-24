@@ -12,8 +12,8 @@ class Action {
     public:
       virtual void execute() = 0;
       virtual ActionState status() = 0;
-      virtual int timeLeft() = 0;
-      virtual int averageTime() = 0; 
+      virtual int timeLeftInSeconds() = 0;
+      virtual int averageTimeInSeconds() = 0; 
       virtual int getErrorCode() = 0;
 };
 

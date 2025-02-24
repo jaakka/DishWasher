@@ -1,9 +1,10 @@
 #ifndef TEMPERATURESENSOR_H
 #define TEMPERATURESENSOR_H
 
+#include "Wiring.h"
+#include "Sensor.h"
 #include <OneWire.h>
 #include <DallasTemperature.h>
-#include "Sensor.h"
 
 class TemperatureSensor : public Sensor {
   public:

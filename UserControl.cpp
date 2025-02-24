@@ -1,7 +1,4 @@
-#include "HardwareSerial.h"
 #include "UserControl.h"
-#include "Arduino.h"
-#include "Wiring.h"
 
 volatile int UserControl::lastEncoded = 0, UserControl::pos = 0, UserControl::lastPos = 0;
 

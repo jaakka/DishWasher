@@ -1,8 +1,4 @@
 #include "LcdHandler.h"
-#include "Wiring.h"
-#include <Arduino.h>
-#include "LcdValues.h"
-
 
 void LcdHandler::SendLcdCommand(String cmd)
 {

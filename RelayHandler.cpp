@@ -1,6 +1,4 @@
 #include "RelayHandler.h"
-#include "Wiring.h"
-#include <Arduino.h>
 
 void RelayHandler::begin() {
     pinMode(VALVE_RELAY_PIN, OUTPUT);
@@ -43,4 +41,20 @@ void RelayHandler::heatWater() {
 
 void RelayHandler::stopHeatingWater() {
     digitalWrite(HEATER_RELAY_PIN, LOW);
+}
+
+void RelayHandler::startEmptyPump() {
+    digitalWrite(PUMPOUT_RELAY_PIN, HIGH);
+}
+
+void RelayHandler::stopEmptyPump() {
+    digitalWrite(PUMPOUT_RELAY_PIN, LOW);
+}
+
+void RelayHandler::startWashPump() {
+    digitalWrite(PUMPWASH_RELAY_PIN, HIGH);
+}
+
+void RelayHandler::stopWashPump() {
+    digitalWrite(PUMPWASH_RELAY_PIN, LOW);
 }

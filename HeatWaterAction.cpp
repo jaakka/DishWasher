@@ -1,22 +1,37 @@
 #include "HeatWaterAction.h"
-#include "ErrorCodes.h"
-#include "Config.h"
-#include <Arduino.h>
 
 void HeatWaterAction::execute() {
     if(!actionStarted && sensorHandler->temperatureAreRealistic()) {
-        relayHandler->heatWater();
-        startTime = millis();
-        actionStarted = true;
-        if(ENABLE_ACTIONS_DEBUG) {
-            Serial.println("Heating water started");
+        if(sensorHandler->waterLevelMax()){
+            relayHandler->heatWater();
+            startTime = millis();
+            actionStarted = true;
+            if(ENABLE_ACTIONS_DEBUG) {
+                Serial.println("Heating water started");
+            }
+        }
+
+        if(sensorHandler->waterLevelNotMax()){
+            relayHandler->stopHeatingWater();
+            errorCode = ERROR_WATER_LEVEL_TOO_LOW_FOR_HEAT;
+            error = true;         
+            if(ENABLE_ACTIONS_DEBUG) {
+                Serial.println("Heating water error - water level too low");
+            }
         }
     }
     if(actionStarted && sensorHandler->getTemperature() >= temp) {
         relayHandler->stopHeatingWater();
+        usedTime = (millis() - startTime) / 1000;
         actionFinished = true;
         if(ENABLE_ACTIONS_DEBUG) {
-            Serial.println("Heating water finished");
+            Serial.print("Heating water finished ");
+            Serial.print(usedTime);
+            Serial.println(" seconds");
+        }
+
+        if(ENABLE_MACHINE_LEARNING) {
+            MachineLearning::learnData(MachineData::HeatingTime, usedTime);
         }
     }
     if(!sensorHandler->temperatureAreRealistic()) {
@@ -27,8 +42,10 @@ void HeatWaterAction::execute() {
         }
     }
     if(millis() - startTime > MAX_ALLOWED_TIME_HEAT_WATER * 1000) {
+        errorCode = ERROR_WATER_HEAT_TIME_LIMIT_REACHED;
         error = true;
         relayHandler->stopHeatingWater();
+
         if(ENABLE_ACTIONS_DEBUG) {
             Serial.println("Heating water error - time limit reached");
         }
@@ -50,8 +67,8 @@ ActionState HeatWaterAction::status() {
     }
 }
 
-int HeatWaterAction::timeLeft() {
-    return 0;
+int HeatWaterAction::timeLeftInSeconds() {
+    return averageTime - (millis() - startTime) / 1000;
 }
 
 HeatWaterAction::HeatWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler, int temp) {
@@ -60,14 +77,24 @@ HeatWaterAction::HeatWaterAction(SafetyHandler* safetyHandler, RelayHandler* rel
     this->temp = temp;
     this->actionStarted = false;
     error = false;
+    usedTime = 0;
     actionFinished = false;
+
+    if(ENABLE_MACHINE_LEARNING) {
+        averageTime = MachineLearning::getValue(MachineData::HeatingTime);
+        if(averageTime == 0) {
+            averageTime = MAX_ALLOWED_TIME_HEAT_WATER;
+        }
+    } else {
+        averageTime = MAX_ALLOWED_TIME_HEAT_WATER;
+    }
 }
 
-int HeatWaterAction::averageTime() {
-    return 0;
+int HeatWaterAction::averageTimeInSeconds() {
+    return averageTime;
 }
 
 int HeatWaterAction::getErrorCode() {
-    return ERROR_WATER_HEAT_TIME_LIMIT_REACHED;
+    return errorCode;
 }
 

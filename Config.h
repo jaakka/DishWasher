@@ -1,6 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#define ENABLE_MACHINE_LEARNING false // Dishwasher learn actions time using
 #define ALLOW_SHUTDOWN_AFTER_START_S 4
 #define BOOL_SENSORS_MIN_DETECT_VALUE 500
 #define ENABLE_SENSORS_DEBUG false
@@ -12,5 +13,6 @@
 #define ACTION_SOAPDOOR_WAIT 2 // seconds
 #define MAX_ALLOWED_TIME_ADD_WATER 10 // seconds
 #define MAX_ALLOWED_TIME_HEAT_WATER 10 // seconds
+#define WATER_EMPTY_PUMP_TIME 10 // seconds
 
 #endif

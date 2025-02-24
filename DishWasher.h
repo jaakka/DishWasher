@@ -7,6 +7,13 @@
 #include "SensorHandler.h"
 #include "SafetyHandler.h"
 #include "QuickWashProgram.h"
+#include "UserControl.h"
+#include "RelayHandler.h"
+#include "SafetyHandler.h"
+#include "Config.h"
+#include "LcdHandler.h"
+#include "LcdValues.h"
+#include <Arduino.h>
 
 #define MENU_NOSELECTED 0
 #define MENU_QUICKWASH 1

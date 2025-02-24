@@ -1,6 +1,4 @@
 #include "OnOffSensor.h"
-#include <Arduino.h>
-#include "Config.h"
 
 OnOffSensor::OnOffSensor(int sensorPin) {
     this->sensorPin = sensorPin;

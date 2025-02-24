@@ -1,17 +1,16 @@
-#ifndef HEATWATERACTION_H
-#define HEATWATERACTION_H
+#ifndef WASHACTION_H
+#define WASHACTION_H
 #include "RelayHandler.h"
-#include "SensorHandler.h"
 #include "SafetyHandler.h"
+#include "SensorHandler.h"
 #include "Action.h"
 #include "ErrorCodes.h"
 #include "Config.h"
-#include "MachineLearning.h"
 #include <Arduino.h>
 
-class HeatWaterAction : public Action {
+class WashAction : public Action {
   public:
-    HeatWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler, int temp);
+    WashAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler, int washTimeInSeconds);
     void execute() override;
     ActionState status() override;
     int timeLeftInSeconds() override;
@@ -19,13 +18,12 @@ class HeatWaterAction : public Action {
     int getErrorCode() override;
   private:
     RelayHandler* relayHandler;
-    SensorHandler* sensorHandler;
     SafetyHandler* safetyHandler;
-    int averageTime;
+    SensorHandler* sensorHandler;
+    int washTimeInSeconds;
     unsigned long startTime;
-    int usedTime;
-    int temp;
     bool actionStarted;
+    bool waterIsMaxOnStart;
     int errorCode;
     bool error;
     bool actionFinished;

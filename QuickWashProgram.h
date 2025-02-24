@@ -6,10 +6,16 @@
 #include "SafetyHandler.h"
 #include "Program.h"
 #include "Action.h"
+#include "AddWaterAction.h"
+#include "HeatWaterAction.h"
+#include "AddSoapAction.h"
+#include "EmptyWaterAction.h"
+#include "WashAction.h"
+#include <Arduino.h>
 
 class QuickWashProgram : public Program {
   public:
-    static const int TOTAL_ACTIONS = 3; 
+    static const int TOTAL_ACTIONS = 5; 
     int currentAction = 0;
     Action* actions[TOTAL_ACTIONS];
     QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler);

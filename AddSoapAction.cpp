@@ -1,8 +1,4 @@
 #include "AddSoapAction.h"
-#include "RelayHandler.h"
-#include "SafetyHandler.h"
-#include <Arduino.h>
-#include "Config.h"
 
 AddSoapAction::AddSoapAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler) {
     this->safetyHandler = safetyHandler;
@@ -47,11 +43,11 @@ ActionState AddSoapAction::status() {
     }
 }
 
-int AddSoapAction::timeLeft() {
+int AddSoapAction::timeLeftInSeconds() {
     return (ACTION_SOAPDOOR_WAIT * 1000) - (millis() - startTime);
 }
 
-int AddSoapAction::averageTime() {
+int AddSoapAction::averageTimeInSeconds() {
     return 10;
 }
 

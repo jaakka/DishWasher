@@ -1,6 +1,11 @@
 #ifndef SENSORHANDLER_H
 #define SENSORHANDLER_H
 
+#include "OnOffSensor.h"
+#include "TemperatureSensor.h"
+#include "QualitySensor.h"
+#include "Wiring.h"
+#include "Config.h"
 #include "Sensor.h"
 
 class SensorHandler

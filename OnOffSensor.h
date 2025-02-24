@@ -2,6 +2,8 @@
 #define ONOFFSENSOR_H
 
 #include "Sensor.h"
+#include "Config.h"
+#include <Arduino.h>
 
 class OnOffSensor : public Sensor {
     public:

@@ -186,7 +186,7 @@ void DishWasher::loop() {
                 lcdHandler.DrawLargeIcon(LargeIcon::RESTART);
                 break;
               case ActionName::EMPTY_WATER:
-                lcdHandler.DrawLargeIcon(LargeIcon::WATER);
+                lcdHandler.DrawLargeIcon(LargeIcon::STORM);
                 break;
             }
           }

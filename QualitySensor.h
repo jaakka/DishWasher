@@ -1,7 +1,9 @@
 #ifndef QUALITYSENSOR_H
 #define QUALITYSENSOR_H
 
+#include <Arduino.h>
 #include "Sensor.h"
+#include "Wiring.h"
 
 class QualitySensor : public Sensor {
   public:

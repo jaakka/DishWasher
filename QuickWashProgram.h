@@ -12,15 +12,19 @@
 #include "EmptyWaterAction.h"
 #include "WashAction.h"
 #include <Arduino.h>
+#include "Action.h"
 
 class QuickWashProgram : public Program {
   public:
-    static const int TOTAL_ACTIONS = 5; 
+    static const int TOTAL_ACTIONS = 8; 
     int currentAction = 0;
     Action* actions[TOTAL_ACTIONS];
+    ActionName getCurrentAction() override { return actions[currentAction]->getName(); }
+    int getCurrentActionDuration() override { return actions[currentAction]->getRemainingDuration(); }
     QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler);
     void loop() override;
-    int getDurationMs() override;
+    int getRemainingDuration() override;
+    int getDuration() override;
   private:
     RelayHandler* relayHandler;
     SensorHandler* sensorHandler; 

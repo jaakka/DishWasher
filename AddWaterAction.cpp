@@ -53,13 +53,13 @@ ActionState AddWaterAction::status() {
   }
 }
 
-int AddWaterAction::timeLeftInSeconds() {
+int AddWaterAction::getRemainingDuration() {
   return averageTime - ((millis() - actionStartTime) / 1000);
 }
 
 AddWaterAction::AddWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler) {
   error = false;
-  actionMaxTime = MAX_ALLOWED_TIME_ADD_WATER * 1000;
+  actionMaxTime = (unsigned long)MAX_ALLOWED_TIME_ADD_WATER * 1000;
   isWaterAdded = false;
   actionStarted = false;
   this->sensorHandler = sensorHandler;
@@ -73,7 +73,7 @@ AddWaterAction::AddWaterAction(SafetyHandler* safetyHandler, RelayHandler* relay
   }
 }
 
-int AddWaterAction::averageTimeInSeconds() {
+int AddWaterAction::getDuration() {
   return averageTime;
 }
 

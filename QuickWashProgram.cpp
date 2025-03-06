@@ -6,11 +6,14 @@ QuickWashProgram::QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* r
     this->sensorHandler = sensorHandler;
     
     actions[0] = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
-    actions[1] = new AddSoapAction(safetyHandler, relayHandler);
-    actions[2] = new WashAction(safetyHandler, relayHandler, sensorHandler, 10);
-    actions[3] = new HeatWaterAction(safetyHandler, relayHandler, sensorHandler, 40);
+    actions[1] = new HeatWaterAction(safetyHandler, relayHandler, sensorHandler, 65);
+    actions[2] = new AddSoapAction(safetyHandler, relayHandler); // soap time is now longer because hand soap is used (1min)
+    actions[3] = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 20);
     actions[4] = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
-    
+    actions[5] = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
+    actions[6] = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 10);
+    actions[7] = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
+
     // NOTE - Remember update TOTAL_ACTIONS if you add more actions
     error = false;
 }
@@ -32,6 +35,18 @@ void QuickWashProgram::loop() {
     }
 }
       
-int QuickWashProgram::getDurationMs() {
-    return 0;
+int QuickWashProgram::getDuration() {
+    int duration = 0;
+    for(int i = 0; i < TOTAL_ACTIONS; i++) {
+        duration += actions[i]->getDuration();
+    }
+    return duration;
+}
+
+int QuickWashProgram::getRemainingDuration() {
+  int duration = actions[currentAction]->getRemainingDuration();
+  for (int i = currentAction + 1; i < TOTAL_ACTIONS; i++) {
+      duration += actions[i]->getDuration();
+  }
+  return duration;
 }

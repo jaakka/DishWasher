@@ -2,8 +2,15 @@
 
 void MachineLearning::learnData(MachineData data, int value)
 {
-    int newValue = calcAverage(data, value);
+    int newValue = value; //calcAverage(data, value); use average later
     setValue(data, newValue);
+}
+
+void MachineLearning::printLearnedData() 
+{
+    Serial.println("============ Machine learn data ============");
+    Serial.println("Fill time: "+String(getValue(MachineData::FillTime))+"s");
+    Serial.println("Heat time: "+String(getValue(MachineData::HeatingTime))+"s");
 }
 
 int MachineLearning::getValue(MachineData data)

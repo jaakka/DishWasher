@@ -15,8 +15,9 @@ class AddSoapAction : public Action {
       AddSoapAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler);
       void execute() override;
       ActionState status() override;
-      int timeLeftInSeconds() override;
-      int averageTimeInSeconds() override;
+      ActionName getName() override { return ActionName::ADD_SOAP; }
+      int getRemainingDuration() override;
+      int getDuration() override;
       int getErrorCode() override;
     private:
       bool actionStarted;

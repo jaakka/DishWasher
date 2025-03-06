@@ -97,7 +97,7 @@ void DishWasher::updateMenu() {
     case MENU_QUICKWASH: // Fast
       lcdHandler.DrawLargeIcon(LargeIcon::SOAP);
       lcdHandler.DrawText(TextPosition::CENTER_TOP, "Pikapesu");
-      lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, "30m");
+      lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, getTimeStr(quickWashProgram.getDuration()));
       break;
     case MENU_COLDWASH: // Cold
       lcdHandler.DrawLargeIcon(LargeIcon::SNOWFLAKE);
@@ -155,14 +155,68 @@ void DishWasher::changePage(int newPage) {
 
 void DishWasher::loop() {
   safetyHandler.loop();
-  quickWashProgram.loop();
+  if(quickWashActive)
+  {
+    quickWashProgram.loop();
+    if(quickWashProgram.getRemainingDuration() == 0) {
+      quickWashActive = false;
+    } else {
+      if(millis() - lastLcdUpdate > 100) {
+        if(lastAction != quickWashProgram.getCurrentAction()) {
+          lastAction = quickWashProgram.getCurrentAction();
+          lcdHandler.LcdClear();
+          switch (lastAction) {
+            case ActionName::ADD_WATER:
+              lcdHandler.DrawLargeIcon(LargeIcon::WATER);
+              break;
+            case ActionName::HEAT_WATER:
+              lcdHandler.DrawLargeIcon(LargeIcon::FIRE);
+              break;
+            case ActionName::ADD_SOAP:
+              lcdHandler.DrawLargeIcon(LargeIcon::SOAP);
+              break;
+            case ActionName::WASH:
+              lcdHandler.DrawLargeIcon(LargeIcon::RESTART);
+              break;
+            case ActionName::EMPTY_WATER:
+              lcdHandler.DrawLargeIcon(LargeIcon::WATER);
+              break;
+          }
+        }
+        lcdHandler.DrawText(TextPosition::CENTER_TOP, getTimeStr(quickWashProgram.getCurrentActionDuration()));
+        lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, getTimeStr(quickWashProgram.getRemainingDuration()));
+        lastLcdUpdate = millis();
+      }
+    }
+  }
   userControl.loop();
   sensorHandler.loop();
   userActions();
 }
 
+String DishWasher::getTimeStr(int seconds) {
+  int minutes = seconds / 60;
+  int hours = minutes / 60;
+  minutes = minutes % 60;
+  seconds = seconds % 60;
+  String timeStr = "";
+  if(seconds != 0) {
+    timeStr = String(seconds) + "s";
+  }
+
+  if(minutes != 0) {
+    timeStr = String(minutes) + "m " + timeStr;
+  }
+  if(hours != 0) {
+    timeStr = String(hours) + "h " + timeStr;
+  }
+  return timeStr;
+}
+
 DishWasher::DishWasher() : safetyHandler(&sensorHandler), quickWashProgram(&safetyHandler, &relayHandler, &sensorHandler) {
+  quickWashActive = false;
   buttonPressed = true;
+  lastAction = ActionName::EMPTY_WATER;
 }
 
 void DishWasher::userActions() {
@@ -183,6 +237,10 @@ void DishWasher::userActions() {
             
             case MENU_SETTINGS:
               changePage(PAGE_SETTINGS);
+              break;
+
+            case MENU_QUICKWASH:
+              quickWashActive = true;
               break;
           }
           break; // Page break 

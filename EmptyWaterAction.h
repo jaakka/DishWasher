@@ -13,8 +13,9 @@ class EmptyWaterAction : public Action {
     EmptyWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler);
     void execute() override;
     ActionState status() override;
-    int timeLeftInSeconds() override;
-    int averageTimeInSeconds() override;
+    ActionName getName() override { return ActionName::EMPTY_WATER; }
+    int getRemainingDuration() override;
+    int getDuration() override;
     int getErrorCode() override;
   private:
     RelayHandler* relayHandler;

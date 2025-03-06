@@ -18,7 +18,7 @@ void AddSoapAction::execute() {
             actionStarted = true;
             startTime = millis();
         } else {
-            if(millis() - startTime > (ACTION_SOAPDOOR_WAIT * 1000)) {
+            if(millis() - startTime > ((unsigned long)ACTION_SOAPDOOR_WAIT * 1000)) {
                 relayHandler->closeSoapDoor();
                 actionFinished = true;
                 if(ENABLE_ACTIONS_DEBUG) {
@@ -43,12 +43,12 @@ ActionState AddSoapAction::status() {
     }
 }
 
-int AddSoapAction::timeLeftInSeconds() {
-    return (ACTION_SOAPDOOR_WAIT * 1000) - (millis() - startTime);
+int AddSoapAction::getRemainingDuration() {
+    return ((unsigned long)ACTION_SOAPDOOR_WAIT * 1000) - (millis() - startTime);
 }
 
-int AddSoapAction::averageTimeInSeconds() {
-    return 10;
+int AddSoapAction::getDuration() {
+    return ACTION_SOAPDOOR_WAIT;
 }
 
 int AddSoapAction::getErrorCode() {

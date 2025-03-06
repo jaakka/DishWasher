@@ -41,7 +41,7 @@ void HeatWaterAction::execute() {
             Serial.println("Heating water error - temperature not realistic");
         }
     }
-    if(millis() - startTime > MAX_ALLOWED_TIME_HEAT_WATER * 1000) {
+    if(millis() - startTime > (unsigned long)MAX_ALLOWED_TIME_HEAT_WATER * 1000) {
         errorCode = ERROR_WATER_HEAT_TIME_LIMIT_REACHED;
         error = true;
         relayHandler->stopHeatingWater();
@@ -67,14 +67,14 @@ ActionState HeatWaterAction::status() {
     }
 }
 
-int HeatWaterAction::timeLeftInSeconds() {
+int HeatWaterAction::getRemainingDuration() {
     return averageTime - (millis() - startTime) / 1000;
 }
 
 HeatWaterAction::HeatWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler, int temp) {
     this->relayHandler = relayHandler;
     this->sensorHandler = sensorHandler;
-    this->temp = temp;
+    this->temp = temp - TEMP_OFFSET;
     this->actionStarted = false;
     error = false;
     usedTime = 0;
@@ -90,7 +90,7 @@ HeatWaterAction::HeatWaterAction(SafetyHandler* safetyHandler, RelayHandler* rel
     }
 }
 
-int HeatWaterAction::averageTimeInSeconds() {
+int HeatWaterAction::getDuration() {
     return averageTime;
 }
 

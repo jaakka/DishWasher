@@ -44,6 +44,7 @@ class DishWasher {
     void updateCurrentPage();
     void updateMenu(); 
     void updateSettings();
+    String getTimeStr(int seconds);
     int selection;
     int pageId;
     int minSelection, maxSelection;
@@ -53,8 +54,11 @@ class DishWasher {
     RelayHandler relayHandler;
     LcdHandler lcdHandler;
     SensorHandler sensorHandler;
+    ActionName lastAction;
+    unsigned long lastLcdUpdate;
     bool buttonPressed;
     void userActions();
+    bool quickWashActive;
 };
 
 #endif

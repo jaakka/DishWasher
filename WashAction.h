@@ -13,8 +13,9 @@ class WashAction : public Action {
     WashAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler, int washTimeInSeconds);
     void execute() override;
     ActionState status() override;
-    int timeLeftInSeconds() override;
-    int averageTimeInSeconds() override;
+    ActionName getName() override { return ActionName::WASH; }
+    int getRemainingDuration() override;
+    int getDuration() override;
     int getErrorCode() override;
   private:
     RelayHandler* relayHandler;

@@ -2,6 +2,7 @@
 #define MACHINELEARNING_H
 
 #include <EEPROM.h>
+#include <Arduino.h>
 
 enum class MachineData
 {
@@ -15,6 +16,7 @@ class MachineLearning
         static void learnData(MachineData data, int timeInSeconds);
         static int getValue(MachineData data);
         static void setValue(MachineData data, int value);
+        static void printLearnedData();
     private:
         static int calcAverage(MachineData data, int value);
 };

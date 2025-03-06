@@ -15,11 +15,12 @@ class AddWaterAction : public Action {
       AddWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler);
       void execute() override;
       ActionState status() override;
-      int timeLeftInSeconds() override;
-      int averageTimeInSeconds() override;
+      ActionName getName() override { return ActionName::ADD_WATER; }
+      int getRemainingDuration() override;
+      int getDuration() override;
       int getErrorCode() override;
     private:
-      int actionMaxTime;
+      unsigned long actionMaxTime;
       unsigned long actionStartTime;
       int averageTime;
       bool error;

@@ -5,7 +5,7 @@ void SensorHandler::begin() {
     sensors[1] = new OnOffSensor(FLOOD_SENSOR_PIN);
     sensors[2] = new OnOffSensor(OVERHEAT_SENSOR_PIN);
     sensors[3] = new OnOffSensor(LEVEL_SENSOR_PIN);
-    sensors[4] = new OnOffSensor(QUANTITY_SENSOR_PIN);
+    sensors[4] = new OnOffSensor(DIGITAL_QUALITY_SENSOR_PIN);
     sensors[5] = new TemperatureSensor();
     sensors[6] = new QualitySensor();
 
@@ -20,9 +20,16 @@ void SensorHandler::loop() {
         }
     }
     
-    if (ENABLE_SENSORS_DEBUG && millis() - lastDebugMsgTime > SENSORS_DEBUG_INTERVAL_MS) {
+    if ((ENABLE_SENSORS_DEBUG || TEMP_DEBUG_VALUE) && millis() - lastDebugMsgTime > SENSORS_DEBUG_INTERVAL_MS) {
         lastDebugMsgTime = millis();
-        printDebugMsg();
+        if(TEMP_DEBUG_VALUE) {
+          Serial.print("Temp:");
+          Serial.println(getTemperature());
+        }
+        else
+        {
+          printDebugMsg();
+        }
     }
 }
 
@@ -85,11 +92,11 @@ bool SensorHandler::waterAnalogQualityBad() {
 }
 
 float SensorHandler::getTemperature() {
-    return 10;//sensors[5]->getSensorValue();
+    return sensors[5]->getSensorValue();
 }
 
 bool SensorHandler::temperatureAreRealistic() {
-    return true; //sensors[5]->getSensorValue() > MIN_REALISTIC_TEMPERATURE && sensors[5]->getSensorValue() < MAX_REALISTIC_TEMPERATURE;
+    return sensors[5]->getSensorValue() > MIN_REALISTIC_TEMPERATURE && sensors[5]->getSensorValue() < MAX_REALISTIC_TEMPERATURE;
 }
 
 float SensorHandler::getQuality() {

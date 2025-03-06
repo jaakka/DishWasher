@@ -16,7 +16,9 @@ class TemperatureSensor : public Sensor {
   private:
     OneWire oneWire;              
     DallasTemperature dallasTemperature;
-    float sensorValue;
+    float temperatures[10];
+    float calcAverageTemperature();
+    void addTemperature(float temp);
 };
 
 #endif

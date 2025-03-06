@@ -31,7 +31,7 @@ void WashAction::execute() {
     } 
     
     if(actionStarted && !actionFinished) {
-        if(millis() - startTime > washTimeInSeconds * 1000) {
+        if(millis() - startTime > (unsigned long)washTimeInSeconds * 1000) {
             relayHandler->stopWashPump();
             actionFinished = true;
 
@@ -55,15 +55,15 @@ ActionState WashAction::status() {
     }
 }
 
-int WashAction::timeLeftInSeconds() {
+int WashAction::getRemainingDuration() {
     if(actionStarted) {
-        return (washTimeInSeconds * 1000 - (millis() - startTime)) / 1000;
+        return ((unsigned long)washTimeInSeconds * 1000 - (millis() - startTime)) / 1000;
     } else {
         return washTimeInSeconds;
     }
 }
 
-int WashAction::averageTimeInSeconds() {
+int WashAction::getDuration() {
     return washTimeInSeconds;
 }
 

@@ -23,7 +23,7 @@ void EmptyWaterAction::execute() {
         }
     }
 
-    if(millis() - startTime > WATER_EMPTY_PUMP_TIME * 1000) {
+    if(millis() - startTime > (unsigned long)WATER_EMPTY_PUMP_TIME * 1000) {
         relayHandler->stopEmptyPump();
 
         if(ENABLE_ACTIONS_DEBUG) {
@@ -59,11 +59,11 @@ ActionState EmptyWaterAction::status() {
     }
 }
 
-int EmptyWaterAction::timeLeftInSeconds() { 
+int EmptyWaterAction::getRemainingDuration() { 
   return (WATER_EMPTY_PUMP_TIME * 1000 - (millis() - startTime)) / 1000;
 }
 
-int EmptyWaterAction::averageTimeInSeconds() {
+int EmptyWaterAction::getDuration() {
   return WATER_EMPTY_PUMP_TIME;  
 }
 

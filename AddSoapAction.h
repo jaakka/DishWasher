@@ -19,6 +19,7 @@ class AddSoapAction : public Action {
       int getRemainingDuration() override;
       int getDuration() override;
       int getErrorCode() override;
+      String getInfo() override { return "ADDSOAP"; } // this is for debug
     private:
       bool actionStarted;
       bool actionFinished;

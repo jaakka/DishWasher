@@ -18,6 +18,7 @@ class HeatWaterAction : public Action {
     int getRemainingDuration() override;
     int getDuration() override;
     int getErrorCode() override;
+    String getInfo() override;
   private:
     RelayHandler* relayHandler;
     SensorHandler* sensorHandler;

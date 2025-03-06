@@ -17,6 +17,7 @@ class EmptyWaterAction : public Action {
     int getRemainingDuration() override;
     int getDuration() override;
     int getErrorCode() override;
+    String getInfo() override { return "EMPTY"; } // this is for debug
   private:
     RelayHandler* relayHandler;
     SafetyHandler* safetyHandler;

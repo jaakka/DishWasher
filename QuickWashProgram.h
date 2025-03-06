@@ -13,18 +13,23 @@
 #include "WashAction.h"
 #include <Arduino.h>
 #include "Action.h"
+#include "ErrorCodes.h"
 
 class QuickWashProgram : public Program {
   public:
     static const int TOTAL_ACTIONS = 8; 
     int currentAction = 0;
     Action* actions[TOTAL_ACTIONS];
-    ActionName getCurrentAction() override { return actions[currentAction]->getName(); }
-    int getCurrentActionDuration() override { return actions[currentAction]->getRemainingDuration(); }
+
     QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler);
     void loop() override;
     int getRemainingDuration() override;
     int getDuration() override;
+    int getErrorCode() override;
+    String getCurrentActionInfo() override;
+    ActionName getCurrentAction() override;
+    int getCurrentActionDuration() override;
+    
   private:
     RelayHandler* relayHandler;
     SensorHandler* sensorHandler; 

@@ -44,7 +44,7 @@ ActionState AddSoapAction::status() {
 }
 
 int AddSoapAction::getRemainingDuration() {
-    return ((unsigned long)ACTION_SOAPDOOR_WAIT * 1000) - (millis() - startTime);
+    return ACTION_SOAPDOOR_WAIT - ((millis() - startTime) / 1000);
 }
 
 int AddSoapAction::getDuration() {

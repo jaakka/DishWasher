@@ -1,8 +1,17 @@
+#include "HardwareSerial.h"
 #include "MachineLearning.h"
 
 void MachineLearning::learnData(MachineData data, int value)
 {
     int newValue = value; //calcAverage(data, value); use average later
+
+    Serial.println("============ Machine learned ============");
+    if(data == MachineData::FillTime) {
+      Serial.print("Fill time: ");
+    } else {
+      Serial.print("Heat time: ");
+    }
+    Serial.println(newValue);
     setValue(data, newValue);
 }
 

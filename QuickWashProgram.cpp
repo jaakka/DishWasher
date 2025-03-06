@@ -34,6 +34,10 @@ void QuickWashProgram::loop() {
         }
     }
 }
+
+String QuickWashProgram::getCurrentActionInfo() {
+  return actions[currentAction]->getInfo();
+}
       
 int QuickWashProgram::getDuration() {
     int duration = 0;
@@ -49,4 +53,20 @@ int QuickWashProgram::getRemainingDuration() {
       duration += actions[i]->getDuration();
   }
   return duration;
+}
+
+int QuickWashProgram::getErrorCode() {
+  if(error) {
+    return errorCode;
+  } else {
+    return NO_ERROR;
+  }
+}
+
+ActionName QuickWashProgram::getCurrentAction() { 
+  return actions[currentAction]->getName(); 
+}
+
+int QuickWashProgram::getCurrentActionDuration() { 
+  return actions[currentAction]->getRemainingDuration(); 
 }

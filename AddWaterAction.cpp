@@ -59,7 +59,7 @@ int AddWaterAction::getRemainingDuration() {
 
 AddWaterAction::AddWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler) {
   error = false;
-  actionMaxTime = (unsigned long)MAX_ALLOWED_TIME_ADD_WATER * 1000;
+  actionMaxTime = MAX_ALLOWED_TIME_ADD_WATER * 1000;  // actionMaxTime are already long
   isWaterAdded = false;
   actionStarted = false;
   this->sensorHandler = sensorHandler;

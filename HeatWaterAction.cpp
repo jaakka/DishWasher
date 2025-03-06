@@ -90,6 +90,10 @@ HeatWaterAction::HeatWaterAction(SafetyHandler* safetyHandler, RelayHandler* rel
     }
 }
 
+String HeatWaterAction::getInfo() {
+    return String(sensorHandler->getTemperature()) + "/" + String(temp + TEMP_OFFSET) + "C";
+}
+
 int HeatWaterAction::getDuration() {
     return averageTime;
 }

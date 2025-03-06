@@ -19,6 +19,7 @@ class AddWaterAction : public Action {
       int getRemainingDuration() override;
       int getDuration() override;
       int getErrorCode() override;
+      String getInfo() override { return "ADDWATER"; } // this is for debug
     private:
       unsigned long actionMaxTime;
       unsigned long actionStartTime;

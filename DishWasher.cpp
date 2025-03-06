@@ -161,31 +161,45 @@ void DishWasher::loop() {
     if(quickWashProgram.getRemainingDuration() == 0) {
       quickWashActive = false;
     } else {
-      if(millis() - lastLcdUpdate > 100) {
-        if(lastAction != quickWashProgram.getCurrentAction()) {
-          lastAction = quickWashProgram.getCurrentAction();
-          lcdHandler.LcdClear();
-          switch (lastAction) {
-            case ActionName::ADD_WATER:
-              lcdHandler.DrawLargeIcon(LargeIcon::WATER);
-              break;
-            case ActionName::HEAT_WATER:
-              lcdHandler.DrawLargeIcon(LargeIcon::FIRE);
-              break;
-            case ActionName::ADD_SOAP:
-              lcdHandler.DrawLargeIcon(LargeIcon::SOAP);
-              break;
-            case ActionName::WASH:
-              lcdHandler.DrawLargeIcon(LargeIcon::RESTART);
-              break;
-            case ActionName::EMPTY_WATER:
-              lcdHandler.DrawLargeIcon(LargeIcon::WATER);
-              break;
+      if(quickWashProgram.getErrorCode() != NO_ERROR) {
+        quickWashActive = false;
+        lcdHandler.DrawText(TextPosition::CENTER_TOP, "Virhe");
+        lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, String(quickWashProgram.getErrorCode()));
+      }
+      else
+      {
+        if(millis() - lastLcdUpdate > 100) {
+          if(lastAction != quickWashProgram.getCurrentAction()) {
+            lastAction = quickWashProgram.getCurrentAction();
+            lcdHandler.LcdClear();
+            switch (lastAction) {
+              case ActionName::ADD_WATER:
+                lcdHandler.DrawLargeIcon(LargeIcon::WATER);
+                break;
+              case ActionName::HEAT_WATER:
+                lcdHandler.DrawLargeIcon(LargeIcon::FIRE);
+                break;
+              case ActionName::ADD_SOAP:
+                lcdHandler.DrawLargeIcon(LargeIcon::SOAP);
+                break;
+              case ActionName::WASH:
+                lcdHandler.DrawLargeIcon(LargeIcon::RESTART);
+                break;
+              case ActionName::EMPTY_WATER:
+                lcdHandler.DrawLargeIcon(LargeIcon::WATER);
+                break;
+            }
           }
+          if(lastAction != ActionName::HEAT_WATER) {
+            lcdHandler.DrawText(TextPosition::CENTER_TOP, getTimeStr(quickWashProgram.getCurrentActionDuration()));
+            lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, getTimeStr(quickWashProgram.getRemainingDuration()));
+          } else {
+            lcdHandler.DrawText(TextPosition::CENTER_TOP, quickWashProgram.getCurrentActionInfo());
+            lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, getTimeStr(quickWashProgram.getCurrentActionDuration()));
+          }
+
+          lastLcdUpdate = millis();
         }
-        lcdHandler.DrawText(TextPosition::CENTER_TOP, getTimeStr(quickWashProgram.getCurrentActionDuration()));
-        lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, getTimeStr(quickWashProgram.getRemainingDuration()));
-        lastLcdUpdate = millis();
       }
     }
   }

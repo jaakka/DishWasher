@@ -1,6 +1,9 @@
 #ifndef ACTION_H
 #define ACTION_H
 
+#include "ErrorCodes.h"
+#include <Arduino.h>
+
 enum class ActionState {
   NOT_STARTED,
   IN_PROGRESS,
@@ -21,9 +24,10 @@ class Action {
       virtual void execute() = 0;
       virtual ActionState status() = 0;
       virtual ActionName getName() = 0;
+      virtual String getInfo() = 0;
+      virtual int getErrorCode() = 0;
       virtual int getRemainingDuration() = 0;
       virtual int getDuration() = 0; 
-      virtual int getErrorCode() = 0;
 };
 
 #endif

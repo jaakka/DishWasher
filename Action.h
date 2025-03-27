@@ -12,6 +12,7 @@ enum class ActionState {
 };
 
 enum class ActionName {
+  NO_ACTION,
   ADD_WATER,
   HEAT_WATER,
   ADD_SOAP,

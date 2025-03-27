@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define ENABLE_MACHINE_LEARNING false // Dishwasher learn actions time using
+#define ENABLE_MACHINE_LEARNING true // Dishwasher learn actions time using
 #define ALLOW_SHUTDOWN_AFTER_START_S 4
 #define BOOL_SENSORS_MIN_DETECT_VALUE 500
 #define ENABLE_SENSORS_DEBUG false // some problems with lcd 

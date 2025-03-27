@@ -36,7 +36,10 @@ void QuickWashProgram::loop() {
 }
 
 String QuickWashProgram::getCurrentActionInfo() {
-  return actions[currentAction]->getInfo();
+  if (currentAction < TOTAL_ACTIONS) {
+    return actions[currentAction]->getInfo();
+  }
+  return "Valmis";
 }
       
 int QuickWashProgram::getDuration() {
@@ -48,25 +51,33 @@ int QuickWashProgram::getDuration() {
 }
 
 int QuickWashProgram::getRemainingDuration() {
-  int duration = actions[currentAction]->getRemainingDuration();
-  for (int i = currentAction + 1; i < TOTAL_ACTIONS; i++) {
-      duration += actions[i]->getDuration();
-  }
-  return duration;
+  if (currentAction < TOTAL_ACTIONS) {
+    int duration = actions[currentAction]->getRemainingDuration();
+    for (int i = currentAction + 1; i < TOTAL_ACTIONS; i++) {
+        duration += actions[i]->getDuration();
+    }
+    return duration;
+  } 
+  return 0;
 }
 
 int QuickWashProgram::getErrorCode() {
   if(error) {
     return errorCode;
-  } else {
-    return NO_ERROR;
-  }
+  } 
+  return NO_ERROR;
 }
 
 ActionName QuickWashProgram::getCurrentAction() { 
-  return actions[currentAction]->getName(); 
+  if (currentAction < TOTAL_ACTIONS) {
+    return actions[currentAction]->getName(); 
+  }
+  return ActionName::NO_ACTION;
 }
 
 int QuickWashProgram::getCurrentActionDuration() { 
-  return actions[currentAction]->getRemainingDuration(); 
+  if (currentAction < TOTAL_ACTIONS) {
+    return actions[currentAction]->getRemainingDuration(); 
+  }
+  return 0;
 }

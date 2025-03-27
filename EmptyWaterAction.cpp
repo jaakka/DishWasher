@@ -12,9 +12,7 @@ void EmptyWaterAction::execute() {
             if(ENABLE_ACTIONS_DEBUG) {
                 Serial.println("Empty water - pump started");
             }
-        }
-
-        if(sensorHandler->waterLevelNotMax()) {
+        } else { // not max
             errorCode = ERROR_WATER_LEVEL_TOO_LOW_FOR_EMPTY;
             error = true;
             if(ENABLE_ACTIONS_DEBUG) {
@@ -22,26 +20,25 @@ void EmptyWaterAction::execute() {
             }
         }
     }
+    if(actionStarted) {
+        if(millis() - startTime > (unsigned long)WATER_EMPTY_PUMP_TIME * 1000) {
+            relayHandler->stopEmptyPump();
 
-    if(millis() - startTime > (unsigned long)WATER_EMPTY_PUMP_TIME * 1000) {
-        relayHandler->stopEmptyPump();
-
-        if(ENABLE_ACTIONS_DEBUG) {
-            Serial.println("Empty water - pump stopped");
-        }
-
-        if(sensorHandler->waterLevelMax()) {
-            errorCode = ERROR_WATER_EMPTY_TIME_LIMIT_REACHED;
-            error = true;
             if(ENABLE_ACTIONS_DEBUG) {
-                Serial.println("Empty water - error: water level still max");
+                Serial.println("Empty water - pump stopped");
             }
-        }
 
-        if(sensorHandler->waterLevelNotMax()) {
-            actionFinished = true;
-            if(ENABLE_ACTIONS_DEBUG) {
-                Serial.println("Empty water - finished");
+            if(sensorHandler->waterLevelMax()) {
+                errorCode = ERROR_WATER_EMPTY_TIME_LIMIT_REACHED;
+                error = true;
+                if(ENABLE_ACTIONS_DEBUG) {
+                    Serial.println("Empty water - error: water level still max");
+                }
+            } else { // water is empty
+                actionFinished = true;
+                if(ENABLE_ACTIONS_DEBUG) {
+                    Serial.println("Empty water - finished");
+                }
             }
         }
     }
@@ -60,23 +57,26 @@ ActionState EmptyWaterAction::status() {
 }
 
 int EmptyWaterAction::getRemainingDuration() { 
-  return (WATER_EMPTY_PUMP_TIME * 1000 - (millis() - startTime)) / 1000;
+    if(!actionStarted) {
+        return WATER_EMPTY_PUMP_TIME;
+    }
+    return (WATER_EMPTY_PUMP_TIME * 1000 - (millis() - startTime)) / 1000;
 }
 
 int EmptyWaterAction::getDuration() {
-  return WATER_EMPTY_PUMP_TIME;  
+    return WATER_EMPTY_PUMP_TIME;  
 }
 
 int EmptyWaterAction::getErrorCode() {
-  return errorCode;
+    return errorCode;
 }
 
 EmptyWaterAction::EmptyWaterAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler) {
-  this->relayHandler = relayHandler;
-  this->safetyHandler = safetyHandler;
-  this->sensorHandler = sensorHandler;
-  actionStarted = false;
-  actionFinished = false;
-  waterIsMaxOnStart = false;
-  error = false;
+    this->relayHandler = relayHandler;
+    this->safetyHandler = safetyHandler;
+    this->sensorHandler = sensorHandler;
+    actionStarted = false;
+    actionFinished = false;
+    waterIsMaxOnStart = false;
+    error = false;
 }

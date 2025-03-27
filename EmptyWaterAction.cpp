@@ -3,16 +3,18 @@
 void EmptyWaterAction::execute() {
 
     if(!actionStarted) {
+//      Serial.print("Action not started, ");
         if(sensorHandler->waterLevelMax())
         {
             relayHandler->startEmptyPump();
             startTime = millis();
             actionStarted = true;
-
+            //Serial.println(" Starting action");
             if(ENABLE_ACTIONS_DEBUG) {
                 Serial.println("Empty water - pump started");
             }
         } else { // not max
+          //  Serial.println(" Water level too low!");
             errorCode = ERROR_WATER_LEVEL_TOO_LOW_FOR_EMPTY;
             error = true;
             if(ENABLE_ACTIONS_DEBUG) {
@@ -21,9 +23,10 @@ void EmptyWaterAction::execute() {
         }
     }
     if(actionStarted) {
+        //Serial.print("Action is running, ");
         if(millis() - startTime > (unsigned long)WATER_EMPTY_PUMP_TIME * 1000) {
             relayHandler->stopEmptyPump();
-
+            //Serial.println(" Stopping pump!");
             if(ENABLE_ACTIONS_DEBUG) {
                 Serial.println("Empty water - pump stopped");
             }

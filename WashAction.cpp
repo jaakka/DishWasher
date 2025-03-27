@@ -12,11 +12,12 @@ WashAction::WashAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler,
 
 void WashAction::execute() {
     if(!actionStarted) {
+      //Serial.print("Wash not started, ");
         if(sensorHandler->waterLevelMax()) {
             startTime = millis();
             actionStarted = true;
             relayHandler->startWashPump();
-
+            //Serial.println("starting wash.");
             if(ENABLE_ACTIONS_DEBUG) {
                 Serial.println("Washing started");
             }
@@ -24,6 +25,7 @@ void WashAction::execute() {
 
         if(sensorHandler->waterLevelNotMax()) {
             error = true;
+            //Serial.println("water is too low.");
             if(ENABLE_ACTIONS_DEBUG) {
                 Serial.println("Washing error - water level not max");
             }
@@ -31,15 +33,18 @@ void WashAction::execute() {
     } 
     
     if(actionStarted && !actionFinished) {
+      //Serial.print("Wash is active, ");
         if(millis() - startTime > (unsigned long)washTimeInSeconds * 1000) {
+          //Serial.print("Timelimit, ");
             relayHandler->stopWashPump();
             actionFinished = true;
-
+            //Serial.println("Stopping");
             if(ENABLE_ACTIONS_DEBUG) {
                 Serial.println("Washing finished");
             }
         }
     }
+    Serial.println();
 }
 
 ActionState WashAction::status() {

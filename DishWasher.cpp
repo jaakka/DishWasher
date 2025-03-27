@@ -158,7 +158,7 @@ void DishWasher::loop() {
   if(quickWashActive)
   {
     quickWashProgram.loop();
-    if(quickWashProgram.getRemainingDuration() == 0) {
+    if(quickWashProgram.getCurrentAction() == ActionName::NO_ACTION) {
       quickWashActive = false;
     } else {
       if(quickWashProgram.getErrorCode() != NO_ERROR) {

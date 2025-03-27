@@ -17,7 +17,7 @@
 
 class QuickWashProgram : public Program {
   public:
-    static const int TOTAL_ACTIONS = 8; 
+    static const int TOTAL_ACTIONS = 2;//8; 
     int currentAction = 0;
     Action* actions[TOTAL_ACTIONS];
 

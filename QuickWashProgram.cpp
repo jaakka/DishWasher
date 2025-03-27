@@ -9,7 +9,7 @@ QuickWashProgram::QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* r
     actions[1] = new HeatWaterAction(safetyHandler, relayHandler, sensorHandler, 65);
     actions[2] = new AddSoapAction(safetyHandler, relayHandler); // soap time is now longer because hand soap is used (1min)
     actions[3] = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 20);
-    actions[4] = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
+    actions[1] = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
     actions[5] = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
     actions[6] = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 10);
     actions[7] = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
@@ -19,9 +19,12 @@ QuickWashProgram::QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* r
 }
   
 void QuickWashProgram::loop() {
+
+  Serial.println("program loop active");
+
    if(currentAction < TOTAL_ACTIONS && !error) {
         ActionState state = actions[currentAction]->status();
-        
+
         if(state == ActionState::ERROR) {
           errorCode = actions[currentAction]->getErrorCode();
           error = true;
@@ -29,6 +32,7 @@ void QuickWashProgram::loop() {
           if(state != ActionState::FINISHED) {
             actions[currentAction]->execute();
           } else {
+            Serial.println("Action finished: " + String(currentAction));
             currentAction++;
           }
         }

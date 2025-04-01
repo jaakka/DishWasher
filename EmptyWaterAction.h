@@ -17,6 +17,7 @@ class EmptyWaterAction : public Action {
     int getRemainingDuration() override;
     int getDuration() override;
     int getErrorCode() override;
+    void reload() override {actionStarted = false; actionFinished = false;}
     String getInfo() override { return "EMPTY"; } // this is for debug
   private:
     RelayHandler* relayHandler;

@@ -11,7 +11,7 @@ WashAction::WashAction(SafetyHandler* safetyHandler, RelayHandler* relayHandler,
 }
 
 void WashAction::execute() {
-    if(!actionStarted) {
+    if(!actionStarted && !actionFinished) {
       //Serial.print("Wash not started, ");
         if(sensorHandler->waterLevelMax()) {
             startTime = millis();
@@ -44,7 +44,7 @@ void WashAction::execute() {
             }
         }
     }
-    Serial.println();
+    //Serial.println();
 }
 
 ActionState WashAction::status() {

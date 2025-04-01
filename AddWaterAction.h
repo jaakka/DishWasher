@@ -18,6 +18,7 @@ class AddWaterAction : public Action {
       ActionName getName() override { return ActionName::ADD_WATER; }
       int getRemainingDuration() override;
       int getDuration() override;
+      void reload() override {actionStarted = false;}
       int getErrorCode() override;
       String getInfo() override { return "ADDWATER"; } // this is for debug
     private:

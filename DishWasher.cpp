@@ -188,9 +188,12 @@ void DishWasher::loop() {
               case ActionName::EMPTY_WATER:
                 lcdHandler.DrawLargeIcon(LargeIcon::STORM);
                 break;
+              case ActionName::CHECK_QUALITY:
+                lcdHandler.DrawLargeIcon(LargeIcon::TIME);
+                break;
             }
           }
-          if(lastAction != ActionName::HEAT_WATER) {
+          if(lastAction != ActionName::HEAT_WATER && lastAction != ActionName::CHECK_QUALITY) {
             lcdHandler.DrawText(TextPosition::CENTER_TOP, getTimeStr(quickWashProgram.getCurrentActionDuration()));
             lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, getTimeStr(quickWashProgram.getRemainingDuration()));
           } else {

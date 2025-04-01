@@ -17,11 +17,14 @@ enum class ActionName {
   HEAT_WATER,
   ADD_SOAP,
   WASH,
-  EMPTY_WATER
+  EMPTY_WATER,
+  CHECK_QUALITY
 };
 
 class Action {
     public:
+      virtual ~Action() {};
+
       virtual void execute() = 0;
       virtual ActionState status() = 0;
       virtual ActionName getName() = 0;
@@ -29,6 +32,7 @@ class Action {
       virtual int getErrorCode() = 0;
       virtual int getRemainingDuration() = 0;
       virtual int getDuration() = 0; 
+      virtual void reload() = 0;
 };
 
 #endif

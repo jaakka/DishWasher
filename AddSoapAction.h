@@ -4,8 +4,6 @@
 #include "RelayHandler.h"
 #include "SensorHandler.h"
 #include "SafetyHandler.h"
-#include "RelayHandler.h"
-#include "SafetyHandler.h"
 #include "Config.h"
 #include "Action.h"
 #include <Arduino.h>
@@ -19,6 +17,7 @@ class AddSoapAction : public Action {
       int getRemainingDuration() override;
       int getDuration() override;
       int getErrorCode() override;
+      void reload() override {actionStarted = false; actionFinished = false;}
       String getInfo() override { return "ADDSOAP"; } // this is for debug
     private:
       bool actionStarted;

@@ -157,11 +157,17 @@ void DishWasher::loop() {
   safetyHandler.loop();
   if(quickWashActive)
   {
+    if((millis() - lastDebug) > 5000) {
+      Serial.println("Dishwasher - program active!");
+      lastDebug = millis();
+    }
     quickWashProgram.loop();
     if(quickWashProgram.getCurrentAction() == ActionName::NO_ACTION) {
       quickWashActive = false;
+      Serial.println("Dishwasher - program end!");
     } else {
       if(quickWashProgram.getErrorCode() != NO_ERROR) {
+        Serial.println("Dishwasher - program error!");
         quickWashActive = false;
         lcdHandler.DrawText(TextPosition::CENTER_TOP, "Virhe");
         lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, String(quickWashProgram.getErrorCode()));
@@ -191,9 +197,12 @@ void DishWasher::loop() {
               case ActionName::CHECK_QUALITY:
                 lcdHandler.DrawLargeIcon(LargeIcon::TIME);
                 break;
+              case ActionName::CALIBRATE_QUALITY:
+                lcdHandler.DrawLargeIcon(LargeIcon::TIME);
+                break; 
             }
           }
-          if(lastAction != ActionName::HEAT_WATER && lastAction != ActionName::CHECK_QUALITY) {
+          if(lastAction != ActionName::HEAT_WATER && lastAction != ActionName::CHECK_QUALITY && lastAction != ActionName::CALIBRATE_QUALITY) {
             lcdHandler.DrawText(TextPosition::CENTER_TOP, getTimeStr(quickWashProgram.getCurrentActionDuration()));
             lcdHandler.DrawText(TextPosition::CENTER_BOTTOM, getTimeStr(quickWashProgram.getRemainingDuration()));
           } else {
@@ -234,6 +243,7 @@ DishWasher::DishWasher() : safetyHandler(&sensorHandler), quickWashProgram(&safe
   quickWashActive = false;
   buttonPressed = true;
   lastAction = ActionName::EMPTY_WATER;
+  lastDebug = millis();
 }
 
 void DishWasher::userActions() {

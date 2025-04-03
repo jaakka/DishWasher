@@ -18,7 +18,8 @@ enum class ActionName {
   ADD_SOAP,
   WASH,
   EMPTY_WATER,
-  CHECK_QUALITY
+  CHECK_QUALITY,
+  CALIBRATE_QUALITY
 };
 
 class Action {

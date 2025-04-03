@@ -56,6 +56,7 @@ class DishWasher {
     SensorHandler sensorHandler;
     ActionName lastAction;
     unsigned long lastLcdUpdate;
+    unsigned long lastDebug;
     bool buttonPressed;
     void userActions();
     bool quickWashActive;

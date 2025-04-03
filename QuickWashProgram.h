@@ -11,6 +11,7 @@
 #include "AddSoapAction.h"
 #include "EmptyWaterAction.h"
 #include "CheckWaterQualityAction.h"
+#include "CalibrateQualitySensorAction.h"
 #include "WashAction.h"
 #include <Arduino.h>
 #include "Action.h"
@@ -18,8 +19,13 @@
 
 class QuickWashProgram : public Program {
   public:
+    struct ProgramStep {
+      int duration;
+      ActionName action;
+    };
     int currentAction = 0;
-
+    static const int programLastAction = 8;
+    ProgramStep program[programLastAction];
     QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler);
     void loop() override;
     int getRemainingDuration() override;
@@ -30,6 +36,7 @@ class QuickWashProgram : public Program {
     int getCurrentActionDuration() override;
     
   private:
+    ActionName currentActionName;
     Action* currentActionObj;
     RelayHandler* relayHandler;
     SensorHandler* sensorHandler; 

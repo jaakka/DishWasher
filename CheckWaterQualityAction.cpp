@@ -1,6 +1,6 @@
 #include "CheckWaterQualityAction.h"
 
-CheckWaterQualityAction::CheckWaterQualityAction(SensorHandler* sensorHandler, int &positionRef, const int targetQuality, int failJumpPos, int successJumpPos, int maxTryTimes) {
+CheckWaterQualityAction::CheckWaterQualityAction(SensorHandler* sensorHandler, int &positionRef, const int targetQuality, int failJumpPos, int successJumpPos) {
     this->sensorHandler = sensorHandler;
     this->positionRef = &positionRef;
     this->targetQuality = targetQuality;
@@ -15,27 +15,26 @@ CheckWaterQualityAction::CheckWaterQualityAction(SensorHandler* sensorHandler, i
 
 void CheckWaterQualityAction::execute() {
     if(!actionStarted) {
-        if(maxTryTimes > tryCount) {
-            startTime = millis();
-            actionStarted = true;
-            tryCount++;
-            Serial.println("yritetaan "+String(tryCount));
-        }
-        else // no more try times
-        {
-            *positionRef = successJumpPos;
-            actionFinished = true;
-            Serial.println("ei yrityksia");
+        startTime = millis();
+        testTime = millis() - WATER_QUALITY_TEST_MS;
+        actionStarted = true;
+        // Get start values to list
+        for(int i=0; i<totalMeasures; i++) {
+            measurements[i] = this->getCalibratedQuality();
         }
     }
     else
     {
-        if(millis() - startTime > (unsigned long)WATER_QUALITY_CHECK_TIME * 1000) {
-            if(sensorHandler->getQuality() >= targetQuality)
+        if(millis() - startTime < (unsigned long)WATER_QUALITY_CHECK_TIME * 1000) {
+            if(millis() - testTime > WATER_QUALITY_TEST_MS) {
+                addMeasure(getCalibratedQuality());
+                testTime = millis();
+            }
+        } else {
+            if(this->getAverageMeasure() >= targetQuality)
             {
                 *positionRef = successJumpPos;
                 // Water quality pass
-                actionFinished = true;
             }
             else
             {
@@ -43,13 +42,35 @@ void CheckWaterQualityAction::execute() {
                 // Jump program start/target pos
                 *positionRef = failJumpPos;
             }
+            actionFinished = true;
             Serial.println("aika loppu");
         }
     }
 }
 
+void CheckWaterQualityAction::addMeasure(float value) {
+    for(int i = 0; i < totalMeasures - 1; i++) {
+        measurements[i] = measurements[i + 1];
+    }
+    measurements[totalMeasures - 1] = value;
+}
+
+float CheckWaterQualityAction::getAverageMeasure() {
+    float total = 0;
+    for(int i = 0; i<totalMeasures; i++) {
+        total+= measurements[i];
+    }
+    return total/totalMeasures;
+}
+
+float CheckWaterQualityAction::getCalibratedQuality() {
+    int cleanWaterCalib = MachineLearning::getValue(MachineData::QualityCalibration);
+    return ( ( (float)sensorHandler->getQuality()/cleanWaterCalib) * 100 );
+}
+
+
 String CheckWaterQualityAction::getInfo() {
-    return String(sensorHandler->getQuality()) + "/" + String(targetQuality);
+    return String((int)this->getAverageMeasure()) + "/" + String(targetQuality);
 }
 
 ActionState CheckWaterQualityAction::status() {

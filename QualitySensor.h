@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "Sensor.h"
 #include "Wiring.h"
+#include "MachineLearning.h"
 
 class QualitySensor : public Sensor {
   public:

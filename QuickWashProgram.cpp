@@ -8,105 +8,117 @@ QuickWashProgram::QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* r
     // Optimized version for RAM
     error = false;
     actionAvailable = false;
+    currentActionName = ActionName::WASH; // Don't use NO_ACTION, it stop program
+
+    // This is more optimized for arduino nano ram :( 
+    program[0] = {0, ActionName::ADD_WATER};
+    program[1] = {0, ActionName::CALIBRATE_QUALITY};
+    program[2] = {10, ActionName::WASH};
+    program[3] = {0, ActionName::CHECK_QUALITY};
+    program[4] = {5, ActionName::WASH};
+    program[5] = {7, ActionName::WASH};
+    program[6] = {15, ActionName::WASH};
+    program[7] = {20, ActionName::WASH};
 }
   
 
 void QuickWashProgram::loop() {
-
-  if(currentAction % 2 == 1) {
-    if(currentActionObj != nullptr) {
-      actionAvailable = false;
-      delete currentActionObj;
-      currentActionObj = nullptr;
+    
+    if(currentAction >= programLastAction) {
+        Serial.println("Program - finished!");
+        if(currentActionObj != nullptr) {
+            delete currentActionObj;
+            currentActionObj = nullptr;
+        }
+        currentActionName = ActionName::NO_ACTION;
+        return;
     }
-  }
 
-  // Water quality check
-  if (currentAction == 1) {
-    currentActionObj = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
-  } else if (currentAction == 3) {
-    currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 10);
-  } else if (currentAction == 5) {
-    currentActionObj = new CheckWaterQualityAction(sensorHandler, currentAction, 90, 7, 15, 1); // jump 9 if fail, if success jump 15, not need more than 1 try times because it forward command always
-  } else 
+    if(currentActionObj == nullptr) {
+    if(currentAction == 0) {
+      currentActionObj = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
+    } else if(currentAction == 1) {
+      currentActionObj = new CalibrateQualitySensorAction(sensorHandler);
+    } else if(currentAction == 2) {
+      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 10);
+    } else if(currentAction == 3) {
+      currentActionObj = new CheckWaterQualityAction(sensorHandler, currentAction, 100, 4, 6);
+    } else if(currentAction == 4) {
+      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 5);
+    } else if(currentAction == 5) {
+      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 7);
+    } else if(currentAction == 6) {
+      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 15);
+    } else if(currentAction == 7) {
+      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 10);
+    }
+
+    if(currentActionObj != nullptr) {
+      Serial.println("Program - created action "+String(currentAction));
+    }
+
+    return;
+  }
   
-  // Dirty wash
-  if (currentAction == 7) {
-    currentActionObj = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
-  } else if (currentAction == 9) {
-    currentActionObj = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
-  } else if (currentAction == 11) {
-    currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 10);
-  } else if (currentAction == 13) {
-    currentActionObj = new CheckWaterQualityAction(sensorHandler, currentAction, 90, 7, 15, 2);
-  } else 
-  
-  // Basic wash
-  if (currentAction == 15) {
-    currentActionObj = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
-  } else if (currentAction == 17) {
-    currentActionObj = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
-  } else if (currentAction == 19) {
-    currentActionObj = new AddSoapAction(safetyHandler, relayHandler);
-  } else if (currentAction == 21) {
-    currentActionObj = new HeatWaterAction(safetyHandler, relayHandler, sensorHandler, 65);
-  } else if (currentAction == 23) {
-    currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 20);
-  } else if (currentAction == 25) {
-    currentActionObj = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
-  } else if (currentAction == 27) {
-    currentActionObj = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
-  } else if (currentAction == 29) {
-    currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 10);
-  } else if (currentAction == 31) {
-    currentActionObj = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
-  }
-
-  if(currentAction % 2 == 1) {
-    currentAction++;
-  }
-
-  //Handle actions
-  if(currentAction % 2 == 0) {
+  // Action created
+  if(currentActionObj != nullptr) {
     ActionState status = currentActionObj->status();
     if(status != ActionState::ERROR) {
 
-      if(status == ActionState::IN_PROGRESS || status == ActionState::NOT_STARTED) {
-        currentActionObj->execute();
-        actionAvailable = true;
-      }
-
-      if(status == ActionState::FINISHED) {
-        bool autonext = currentActionObj->getName() != ActionName::CHECK_QUALITY;
-        actionAvailable = false;
-        delete currentActionObj;
-        if(autonext) {
-          currentAction++;
+        if(status == ActionState::IN_PROGRESS || status == ActionState::NOT_STARTED) {
+          if(status == ActionState::NOT_STARTED) {
+            Serial.println("Program - action "+String(currentAction) + " starting.");
+          }
+          currentActionObj->execute();
         }
-      }
 
+        if(status == ActionState::FINISHED) {
+          Serial.println("Program - action "+String(currentAction) + " finished.");
+          if(currentActionObj->getName() != ActionName::CHECK_QUALITY) {
+            currentAction++;
+          }
+          delete currentActionObj;
+          currentActionObj = nullptr;
+          return;
+        }
     }
 
-    if(status == ActionState::ERROR) {
-      errorCode = currentActionObj->getErrorCode();
-      error = true;
+    // check are instance still available (faster error handling)
+    if(currentActionObj != nullptr) {
+      if(status == ActionState::ERROR) {
+        errorCode = currentActionObj->getErrorCode();
+        error = true;
+      }
     }
   }
 }
 
 String QuickWashProgram::getCurrentActionInfo() {
-  if (actionAvailable) {
+  if (currentActionObj != nullptr) {
     return currentActionObj->getInfo();
   }
   return "Valmis";
 }
       
 int QuickWashProgram::getDuration() { 
-    return 10;
+  int total_duration = 0;
+  for (int i = 0; i<programLastAction; i++) {
+    total_duration+=program[i].duration;
+  }
+  return total_duration;
 }
 
 int QuickWashProgram::getRemainingDuration() {
-  return 10;
+  int total_duration = 0;
+  if(currentAction <= programLastAction){
+    for (int i = currentAction; i<programLastAction; i++) {
+      total_duration+=program[i].duration;
+    }
+    if (currentActionObj != nullptr) {
+      total_duration += currentActionObj->getRemainingDuration();
+    }
+  }
+  return total_duration;
 }
 
 int QuickWashProgram::getErrorCode() {
@@ -117,14 +129,15 @@ int QuickWashProgram::getErrorCode() {
 }
 
 ActionName QuickWashProgram::getCurrentAction() { 
-  if (actionAvailable) {
-    return currentActionObj->getName();
-  }
-  return ActionName::NO_ACTION;
+  // Update action if available
+  if (currentActionObj != nullptr) {
+    currentActionName = currentActionObj->getName();
+  } 
+  return currentActionName;
 }
 
 int QuickWashProgram::getCurrentActionDuration() { 
-  if (actionAvailable) {
+  if (currentActionObj != nullptr) {
     return currentActionObj->getRemainingDuration();
   }
   return 0;

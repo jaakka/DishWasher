@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define ENABLE_MACHINE_LEARNING false // Dishwasher learn actions time using
+#define ENABLE_MACHINE_LEARNING true // Dishwasher learn actions time using
 #define ALLOW_SHUTDOWN_AFTER_START_S 4
 #define BOOL_SENSORS_MIN_DETECT_VALUE 500
 #define ENABLE_SENSORS_DEBUG false // some problems with lcd 
@@ -16,6 +16,9 @@
 #define MAX_ALLOWED_TIME_HEAT_WATER 60*20 // seconds
 #define WATER_EMPTY_PUMP_TIME 19 // seconds
 #define TEMP_OFFSET 2 // stop heating before 2'C from target temp
-#define WATER_QUALITY_CHECK_TIME 10 
+#define WATER_QUALITY_CHECK_TIME 20
+#define WATER_QUALITY_TEST_MS 500
+#define WATER_QUALITY_CALIBRATE_TIME 20 
+#define WATER_QUALITY_CALIBRATE_DELAY_MS 500
 
 #endif

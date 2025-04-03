@@ -16,3 +16,4 @@ void QualitySensor::loop() {
 float QualitySensor::getSensorValue() {
     return sensorValue;
 }
+

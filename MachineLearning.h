@@ -8,7 +8,9 @@ enum class MachineData
 {
     HeatingTime = 0, // heating time is 2 x 8 bit, because it longer than 5 min. 255 = 4.25m , 8 bit is value and next 8 is multiplier for 255s 
     FillTime = 2,
-    QualityCalibration = 3
+    QualityCalibrationTime = 3,
+    QualityCheckTime = 4,
+    QualityCalibration = 5
 };
 
 enum class BitCount

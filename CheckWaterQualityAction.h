@@ -22,6 +22,7 @@ class CheckWaterQualityAction : public Action {
         static const int totalMeasures = 10;
         float measurements[totalMeasures];
         void addMeasure(float value);
+        float getMaxDiff();
         float getAverageMeasure();
         float getCalibratedQuality();
         bool actionStarted;

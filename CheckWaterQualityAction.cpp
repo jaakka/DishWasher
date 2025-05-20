@@ -31,19 +31,26 @@ void CheckWaterQualityAction::execute() {
                 testTime = millis();
             }
         } else {
-            if(this->getAverageMeasure() >= targetQuality)
-            {
-                *positionRef = successJumpPos;
-                // Water quality pass
+                if(getMaxDiff() != 0)
+                {
+                    startTime = millis();
+                }
+                else
+                {
+                if(this->getAverageMeasure() >= targetQuality)
+                {
+                    *positionRef = successJumpPos;
+                    // Water quality pass
+                }
+                else
+                {
+                    actionStarted = false;
+                    // Jump program start/target pos
+                    *positionRef = failJumpPos;
+                }
+                actionFinished = true;
+                Serial.println("aika loppu");
             }
-            else
-            {
-                actionStarted = false;
-                // Jump program start/target pos
-                *positionRef = failJumpPos;
-            }
-            actionFinished = true;
-            Serial.println("aika loppu");
         }
     }
 }
@@ -68,6 +75,17 @@ float CheckWaterQualityAction::getCalibratedQuality() {
     return ( ( (float)sensorHandler->getQuality()/cleanWaterCalib) * 100 );
 }
 
+float CheckWaterQualityAction::getMaxDiff() {
+    float min = 254, max = 0;
+    for(int i = 0; i<totalMeasures; i++) {
+        if(measurements[i] < min || min == 254) {
+            min = measurements[i];
+        } else if(measurements[i] > max || max == 0) {
+            max = measurements[i];
+        }
+    }
+    return abs(max) - abs(min);
+}
 
 String CheckWaterQualityAction::getInfo() {
     return String((int)this->getAverageMeasure()) + "/" + String(targetQuality);

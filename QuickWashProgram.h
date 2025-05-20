@@ -24,7 +24,7 @@ class QuickWashProgram : public Program {
       ActionName action;
     };
     int currentAction = 0;
-    static const int programLastAction = 8;
+    static const int programLastAction = 15;
     ProgramStep program[programLastAction];
     QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* relayHandler, SensorHandler* sensorHandler);
     void loop() override;

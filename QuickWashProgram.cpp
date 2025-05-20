@@ -13,12 +13,19 @@ QuickWashProgram::QuickWashProgram(SafetyHandler* safetyHandler, RelayHandler* r
     // This is more optimized for arduino nano ram :( 
     program[0] = {0, ActionName::ADD_WATER};
     program[1] = {0, ActionName::CALIBRATE_QUALITY};
-    program[2] = {10, ActionName::WASH};
+    program[2] = {60*10, ActionName::WASH};
     program[3] = {0, ActionName::CHECK_QUALITY};
-    program[4] = {5, ActionName::WASH};
-    program[5] = {7, ActionName::WASH};
-    program[6] = {15, ActionName::WASH};
-    program[7] = {20, ActionName::WASH};
+    program[4] = {0, ActionName::EMPTY_WATER};
+    program[5] = {0, ActionName::ADD_WATER};
+    program[6] = {60*10, ActionName::WASH};
+    program[7] = {0, ActionName::EMPTY_WATER};
+    program[8] = {0, ActionName::ADD_WATER};
+    program[9] = {0, ActionName::HEAT_WATER};
+    program[10] = {60*20, ActionName::WASH};
+    program[11] = {0, ActionName::EMPTY_WATER};
+    program[12] = {0, ActionName::ADD_WATER};
+    program[13] = {60*10, ActionName::WASH};
+    program[14] = {0, ActionName::EMPTY_WATER};
 }
   
 
@@ -40,21 +47,39 @@ void QuickWashProgram::loop() {
     } else if(currentAction == 1) {
       currentActionObj = new CalibrateQualitySensorAction(sensorHandler);
     } else if(currentAction == 2) {
-      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 10);
+      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 10);
     } else if(currentAction == 3) {
-      currentActionObj = new CheckWaterQualityAction(sensorHandler, currentAction, 100, 4, 6);
+      currentActionObj = new CheckWaterQualityAction(sensorHandler, currentAction, 95, 4, 7);
+
+
     } else if(currentAction == 4) {
-      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 5);
+      currentActionObj = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
     } else if(currentAction == 5) {
-      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 7);
+      currentActionObj = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
     } else if(currentAction == 6) {
-      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 15);
+      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 10);
+
+
     } else if(currentAction == 7) {
-      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 10);
+      currentActionObj = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
+    } else if(currentAction == 8) {
+      currentActionObj = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
+    } else if(currentAction == 9) {
+      currentActionObj = new HeatWaterAction(safetyHandler, relayHandler, sensorHandler,45);
+    } else if(currentAction == 10) {
+      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 20);
+    } else if(currentAction == 11) {
+      currentActionObj = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
+    } else if(currentAction == 12) {
+      currentActionObj = new AddWaterAction(safetyHandler, relayHandler, sensorHandler);
+    } else if(currentAction == 13) {
+      currentActionObj = new WashAction(safetyHandler, relayHandler, sensorHandler, 60 * 10);
+    } else if(currentAction == 14) {
+      currentActionObj = new EmptyWaterAction(safetyHandler, relayHandler, sensorHandler);
     }
 
     if(currentActionObj != nullptr) {
-      Serial.println("Program - created action "+String(currentAction));
+      //Serial.println("Program - created action "+String(currentAction));
     }
 
     return;
@@ -67,7 +92,7 @@ void QuickWashProgram::loop() {
 
         if(status == ActionState::IN_PROGRESS || status == ActionState::NOT_STARTED) {
           if(status == ActionState::NOT_STARTED) {
-            Serial.println("Program - action "+String(currentAction) + " starting.");
+            //Serial.println("Program - action "+String(currentAction) + " starting.");
           }
           currentActionObj->execute();
         }

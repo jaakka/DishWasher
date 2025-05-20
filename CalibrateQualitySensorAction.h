@@ -14,13 +14,15 @@ class CalibrateQualitySensorAction : public Action {
         ActionState status() override;
         ActionName getName() override { return ActionName::CALIBRATE_QUALITY; }
         int getRemainingDuration() override;
-        int getDuration() override {return WATER_QUALITY_CALIBRATE_TIME;}
+        int getDuration() override;
         void reload() override {}
         int getErrorCode() override {return NO_ERROR;}
         String getInfo() override {return "Odota";}
     private:
         static const int totalMeasures = 10;
+        int averageTime;
         float measurements[totalMeasures];
+        float getMaxDiff();
         void addMeasure(float value);
         float getAverageMeasure();
         bool actionStarted;
@@ -28,6 +30,7 @@ class CalibrateQualitySensorAction : public Action {
         bool error;
         unsigned long startTime;
         unsigned long lastMeasure;
+        unsigned long realStartTime;
         SensorHandler* sensorHandler;
 };
 
